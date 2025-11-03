@@ -26,7 +26,8 @@
             <input
               id="habitName"
               type="text"
-              [(ngModel)]="newHabitName"
+              [ngModel]="newHabitName()"
+              (ngModelChange)="newHabitName.set($event)"
               placeholder="Ej: Hacer ejercicio, Leer, Meditar..."
               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
               (keyup.enter)="addHabit()"
@@ -38,7 +39,8 @@
             </label>
             <textarea
               id="habitDescription"
-              [(ngModel)]="newHabitDescription"
+              [ngModel]="newHabitDescription()"
+              (ngModelChange)="newHabitDescription.set($event)"
               placeholder="Agrega una descripción opcional..."
               rows="3"
               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
@@ -93,8 +95,7 @@
               <div class="flex-1 min-w-0">
                 <h3 
                   class="text-xl font-semibold mb-1"
-                  [class.text-gray-800]="!habit.completed"
-                  [class.text-gray-400 line-through]="habit.completed">
+                  [ngClass]="{ 'text-gray-800': !habit.completed, 'text-gray-400': habit.completed, 'line-through': habit.completed }">
                   {{ habit.name }}
                 </h3>
                 @if (habit.description) {
@@ -118,7 +119,7 @@
 
               <!-- Botón eliminar -->
               <button
-                (click)="deleteHabit(habit.id)"
+                (click)="openDeleteModal(habit.id)"
                 class="flex-shrink-0 p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors duration-200"
                 title="Eliminar hábito">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -130,5 +131,22 @@
         }
       }
     </div>
+    
+    <!-- Modal de confirmación eliminación -->
+    @if (showDeleteModal()) {
+      <div class="fixed inset-0 z-50 flex items-center justify-center">
+        <!-- Backdrop -->
+        <div class="absolute inset-0 bg-black/40" (click)="closeDeleteModal()"></div>
+        <!-- Contenido -->
+        <div class="relative bg-white w-11/12 max-w-md rounded-xl shadow-2xl p-6">
+          <h4 class="text-lg font-semibold text-gray-800 mb-2">Eliminar hábito</h4>
+          <p class="text-gray-600 mb-6">Esta acción no se puede deshacer. ¿Deseas eliminarlo?</p>
+          <div class="flex gap-3">
+            <button (click)="confirmDelete()" class="flex-1 py-2 px-4 bg-red-600 hover:bg-red-700 text-white rounded-lg font-semibold transition-colors duration-200">Eliminar</button>
+            <button (click)="closeDeleteModal()" class="flex-1 py-2 px-4 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-lg font-semibold transition-colors duration-200">Cancelar</button>
+          </div>
+        </div>
+      </div>
+    }
   </div>
 </div>

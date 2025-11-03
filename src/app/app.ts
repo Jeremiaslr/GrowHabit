@@ -15,6 +15,8 @@ export class App {
   newHabitName = signal('');
   newHabitDescription = signal('');
   showForm = signal(false);
+  showDeleteModal = signal(false);
+  habitIdPendingDelete = signal<string | null>(null);
 
   constructor(protected habitService: HabitService) {}
 
@@ -41,12 +43,30 @@ export class App {
   }
 
   /**
-   * Elimina un hábito
+   * Abre el modal de confirmación para eliminar
    */
-  deleteHabit(id: string): void {
-    if (confirm('¿Estás seguro de que quieres eliminar este hábito?')) {
+  openDeleteModal(id: string): void {
+    this.habitIdPendingDelete.set(id);
+    this.showDeleteModal.set(true);
+  }
+
+  /**
+   * Confirma la eliminación en el modal
+   */
+  confirmDelete(): void {
+    const id = this.habitIdPendingDelete();
+    if (id) {
       this.habitService.deleteHabit(id);
     }
+    this.closeDeleteModal();
+  }
+
+  /**
+   * Cierra el modal sin eliminar
+   */
+  closeDeleteModal(): void {
+    this.showDeleteModal.set(false);
+    this.habitIdPendingDelete.set(null);
   }
 
   /**
