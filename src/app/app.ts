@@ -14,6 +14,8 @@ export class App {
   
   newHabitName = signal('');
   newHabitDescription = signal('');
+  newHabitHours = signal<number | null>(null);
+  newHabitMinutes = signal<number | null>(null);
   showForm = signal(false);
   showDeleteModal = signal(false);
   habitIdPendingDelete = signal<string | null>(null);
@@ -29,9 +31,21 @@ export class App {
       return;
     }
 
-    this.habitService.addHabit(name, this.newHabitDescription().trim() || undefined);
+    // Convertir horas y minutos a minutos totales
+    const hours = this.newHabitHours() ?? 0;
+    const minutes = this.newHabitMinutes() ?? 0;
+    const totalMinutes = hours * 60 + minutes;
+    const duration = totalMinutes > 0 ? totalMinutes : undefined;
+
+    this.habitService.addHabit(
+      name,
+      this.newHabitDescription().trim() || undefined,
+      duration
+    );
     this.newHabitName.set('');
     this.newHabitDescription.set('');
+    this.newHabitHours.set(null);
+    this.newHabitMinutes.set(null);
     this.showForm.set(false);
   }
 
@@ -74,5 +88,21 @@ export class App {
    */
   getCompletedDays(id: string): number {
     return this.habitService.getCompletedDays(id);
+  }
+
+  /**
+   * Convierte minutos a formato legible (horas y minutos)
+   */
+  formatDuration(minutes: number): string {
+    if (!minutes) return '';
+    const hours = Math.floor(minutes / 60);
+    const mins = minutes % 60;
+    if (hours > 0 && mins > 0) {
+      return `${hours} h ${mins} min`;
+    } else if (hours > 0) {
+      return `${hours} h`;
+    } else {
+      return `${mins} min`;
+    }
   }
 }

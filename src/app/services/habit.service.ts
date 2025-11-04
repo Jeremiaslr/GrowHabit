@@ -17,11 +17,12 @@ export class HabitService {
   /**
    * Agrega un nuevo hábito
    */
-  addHabit(name: string, description?: string): void {
+  addHabit(name: string, description?: string, durationMinutes?: number): void {
     const newHabit: Habit = {
       id: this.generateId(),
       name,
       description,
+      durationMinutes,
       completed: false,
       createdAt: new Date(),
       completedDates: []

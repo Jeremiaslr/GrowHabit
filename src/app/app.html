@@ -34,6 +34,40 @@
             />
           </div>
           <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">
+              Duración (opcional)
+            </label>
+            <div class="flex gap-3">
+              <div class="flex-1">
+                <label for="habitHours" class="block text-xs text-gray-500 mb-1">Horas</label>
+                <input
+                  id="habitHours"
+                  type="number"
+                  min="0"
+                  step="1"
+                  [ngModel]="newHabitHours() ?? ''"
+                  (ngModelChange)="newHabitHours.set($event === '' ? null : ( +$event || null))"
+                  placeholder="0"
+                  class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                />
+              </div>
+              <div class="flex-1">
+                <label for="habitMinutes" class="block text-xs text-gray-500 mb-1">Minutos</label>
+                <input
+                  id="habitMinutes"
+                  type="number"
+                  min="0"
+                  max="59"
+                  step="1"
+                  [ngModel]="newHabitMinutes() ?? ''"
+                  (ngModelChange)="newHabitMinutes.set($event === '' ? null : ( +$event || null))"
+                  placeholder="0"
+                  class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                />
+              </div>
+            </div>
+          </div>
+          <div>
             <label for="habitDescription" class="block text-sm font-medium text-gray-700 mb-2">
               Descripción (opcional)
             </label>
@@ -53,7 +87,7 @@
               Agregar Hábito
             </button>
             <button
-              (click)="showForm.set(false); newHabitName.set(''); newHabitDescription.set('')"
+              (click)="showForm.set(false); newHabitName.set(''); newHabitDescription.set(''); newHabitHours.set(null); newHabitMinutes.set(null)"
               class="flex-1 py-2 px-4 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-lg font-semibold transition-colors duration-200">
               Cancelar
             </button>
@@ -103,6 +137,11 @@
                     class="text-gray-600 text-sm mb-3"
                     [class.text-gray-400]="habit.completed">
                     {{ habit.description }}
+                  </p>
+                }
+                @if (habit.durationMinutes) {
+                  <p class="text-gray-600 text-sm mb-3" [class.text-gray-400]="habit.completed">
+                    Duración: {{ formatDuration(habit.durationMinutes) }}
                   </p>
                 }
                 <div class="flex items-center gap-4 text-sm text-gray-500">
