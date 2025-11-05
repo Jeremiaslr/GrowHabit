@@ -17,12 +17,13 @@ export class HabitService {
   /**
    * Agrega un nuevo hábito
    */
-  addHabit(name: string, description?: string, durationMinutes?: number): void {
+  addHabit(name: string, description?: string, durationMinutes?: number, category?: string): void {
     const newHabit: Habit = {
       id: this.generateId(),
       name,
       description,
       durationMinutes,
+      category,
       completed: false,
       createdAt: new Date(),
       completedDates: []
@@ -59,7 +60,7 @@ export class HabitService {
   /**
    * Actualiza un hábito existente
    */
-  updateHabit(id: string, name: string, description?: string, durationMinutes?: number): void {
+  updateHabit(id: string, name: string, description?: string, durationMinutes?: number, category?: string): void {
     this.habits.update(habits =>
       habits.map(habit => {
         if (habit.id === id) {
@@ -67,7 +68,8 @@ export class HabitService {
             ...habit,
             name,
             description,
-            durationMinutes
+            durationMinutes,
+            category
           };
         }
         return habit;

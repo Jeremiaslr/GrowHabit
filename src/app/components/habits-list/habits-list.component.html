@@ -2,7 +2,7 @@
   <div class="max-w-4xl mx-auto">
     <!-- Header -->
     <header class="text-center mb-8">
-      <h1 class="text-5xl font-bold text-gray-800 mb-2">Hábitos</h1>
+      <h1 class="text-5xl font-bold text-gray-800 mb-2">GrowHabit</h1>
       <p class="text-gray-600">Construye buenos hábitos, un día a la vez</p>
     </header>
 
@@ -66,6 +66,20 @@
                 />
               </div>
             </div>
+          </div>
+          <div>
+            <label for="habitCategory" class="block text-sm font-medium text-gray-700 mb-2">
+              Categoría (opcional)
+            </label>
+            <select
+              id="habitCategory"
+              [ngModel]="newHabitCategory() ?? ''"
+              (ngModelChange)="newHabitCategory.set($event === '' ? null : $event)"
+              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+            >
+              <option value="">Sin categoría</option>
+              <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
+            </select>
           </div>
           <div>
             <label for="habitDescription" class="block text-sm font-medium text-gray-700 mb-2">
@@ -132,6 +146,9 @@
                   [ngClass]="{ 'text-gray-800': !habit.completed, 'text-gray-400': habit.completed, 'line-through': habit.completed }">
                   {{ habit.name }}
                 </h3>
+                @if (habit.category) {
+                  <span class="inline-block text-xs px-2 py-1 bg-purple-100 text-purple-700 rounded-full mb-2">{{ habit.category }}</span>
+                }
                 @if (habit.description) {
                   <p 
                     class="text-gray-600 text-sm mb-3"

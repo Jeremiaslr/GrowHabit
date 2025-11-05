@@ -18,9 +18,12 @@ export class HabitsListComponent {
   newHabitDescription = signal('');
   newHabitHours = signal<number | null>(null);
   newHabitMinutes = signal<number | null>(null);
+  newHabitCategory = signal<string | null>(null);
   showForm = signal(false);
   showDeleteModal = signal(false);
   habitIdPendingDelete = signal<string | null>(null);
+
+  categories = ['Salud', 'Trabajo', 'Estudio', 'Finanzas', 'Familia', 'Ocio', 'Otro'];
 
   constructor(protected habitService: HabitService) {}
 
@@ -42,12 +45,14 @@ export class HabitsListComponent {
     this.habitService.addHabit(
       name,
       this.newHabitDescription().trim() || undefined,
-      duration
+      duration,
+      this.newHabitCategory() || undefined
     );
     this.newHabitName.set('');
     this.newHabitDescription.set('');
     this.newHabitHours.set(null);
     this.newHabitMinutes.set(null);
+    this.newHabitCategory.set(null);
     this.showForm.set(false);
   }
 

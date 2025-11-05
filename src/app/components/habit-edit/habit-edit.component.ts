@@ -17,6 +17,9 @@ export class HabitEditComponent implements OnInit {
   habitDescription = signal('');
   habitHours = signal<number | null>(null);
   habitMinutes = signal<number | null>(null);
+  habitCategory = signal<string | null>(null);
+
+  categories = ['Salud', 'Trabajo', 'Estudio', 'Finanzas', 'Familia', 'Ocio', 'Otro'];
 
   constructor(
     private route: ActivatedRoute,
@@ -51,6 +54,8 @@ export class HabitEditComponent implements OnInit {
       this.habitHours.set(null);
       this.habitMinutes.set(null);
     }
+
+    this.habitCategory.set(habit.category || null);
   }
 
   /**
@@ -72,7 +77,8 @@ export class HabitEditComponent implements OnInit {
       this.habitId,
       name,
       this.habitDescription().trim() || undefined,
-      duration
+      duration,
+      this.habitCategory() || undefined
     );
 
     // Redirigir a la lista de hábitos
