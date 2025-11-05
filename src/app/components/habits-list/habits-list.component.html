@@ -1,0 +1,204 @@
+<div class="min-h-screen bg-gradient-to-br from-purple-50 to-blue-50 py-8 px-4">
+  <div class="max-w-4xl mx-auto">
+    <!-- Header -->
+    <header class="text-center mb-8">
+      <h1 class="text-5xl font-bold text-gray-800 mb-2">Hábitos</h1>
+      <p class="text-gray-600">Construye buenos hábitos, un día a la vez</p>
+    </header>
+
+    <!-- Agregar nuevo hábito -->
+    <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
+      @if (!showForm()) {
+        <button 
+          (click)="showForm.set(true)"
+          class="w-full py-3 px-4 bg-purple-600 hover:bg-purple-700 text-white rounded-lg font-semibold transition-colors duration-200 flex items-center justify-center gap-2">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+          </svg>
+          Agregar Nuevo Hábito
+        </button>
+      } @else {
+        <div class="space-y-4">
+          <div>
+            <label for="habitName" class="block text-sm font-medium text-gray-700 mb-2">
+              Nombre del Hábito *
+            </label>
+            <input
+              id="habitName"
+              type="text"
+              [ngModel]="newHabitName()"
+              (ngModelChange)="newHabitName.set($event)"
+              placeholder="Ej: Hacer ejercicio, Leer, Meditar..."
+              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+              (keyup.enter)="addHabit()"
+            />
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">
+              Duración (opcional)
+            </label>
+            <div class="flex gap-3">
+              <div class="flex-1">
+                <label for="habitHours" class="block text-xs text-gray-500 mb-1">Horas</label>
+                <input
+                  id="habitHours"
+                  type="number"
+                  min="0"
+                  step="1"
+                  [ngModel]="newHabitHours() ?? ''"
+                  (ngModelChange)="newHabitHours.set($event === '' ? null : ( +$event || null))"
+                  placeholder="0"
+                  class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                />
+              </div>
+              <div class="flex-1">
+                <label for="habitMinutes" class="block text-xs text-gray-500 mb-1">Minutos</label>
+                <input
+                  id="habitMinutes"
+                  type="number"
+                  min="0"
+                  max="59"
+                  step="1"
+                  [ngModel]="newHabitMinutes() ?? ''"
+                  (ngModelChange)="newHabitMinutes.set($event === '' ? null : ( +$event || null))"
+                  placeholder="0"
+                  class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                />
+              </div>
+            </div>
+          </div>
+          <div>
+            <label for="habitDescription" class="block text-sm font-medium text-gray-700 mb-2">
+              Descripción (opcional)
+            </label>
+            <textarea
+              id="habitDescription"
+              [ngModel]="newHabitDescription()"
+              (ngModelChange)="newHabitDescription.set($event)"
+              placeholder="Agrega una descripción opcional..."
+              rows="3"
+              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+            ></textarea>
+          </div>
+          <div class="flex gap-3">
+            <button
+              (click)="addHabit()"
+              class="flex-1 py-2 px-4 bg-purple-600 hover:bg-purple-700 text-white rounded-lg font-semibold transition-colors duration-200">
+              Agregar Hábito
+            </button>
+            <button
+              (click)="showForm.set(false); newHabitName.set(''); newHabitDescription.set(''); newHabitHours.set(null); newHabitMinutes.set(null)"
+              class="flex-1 py-2 px-4 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-lg font-semibold transition-colors duration-200">
+              Cancelar
+            </button>
+          </div>
+        </div>
+      }
+    </div>
+
+    <!-- Lista de hábitos -->
+    <div class="space-y-4">
+      @if (habitService.habits().length === 0) {
+        <div class="bg-white rounded-lg shadow-lg p-12 text-center">
+          <svg class="w-16 h-16 mx-auto text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+          </svg>
+          <p class="text-gray-500 text-lg">No tienes hábitos todavía</p>
+          <p class="text-gray-400 mt-2">¡Comienza agregando tu primer hábito!</p>
+        </div>
+      } @else {
+        @for (habit of habitService.habits(); track habit.id) {
+          <div class="bg-white rounded-lg shadow-lg p-6 hover:shadow-xl transition-shadow duration-200">
+            <div class="flex items-start gap-4">
+              <!-- Checkbox -->
+              <button
+                (click)="toggleHabit(habit.id)"
+                class="mt-1 flex-shrink-0 w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all duration-200"
+                [class.border-purple-600]="!habit.completed"
+                [class.bg-purple-600]="habit.completed"
+                [class.border-transparent]="habit.completed"
+              >
+                @if (habit.completed) {
+                  <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
+                  </svg>
+                }
+              </button>
+
+              <!-- Contenido del hábito -->
+              <div class="flex-1 min-w-0">
+                <h3 
+                  class="text-xl font-semibold mb-1"
+                  [ngClass]="{ 'text-gray-800': !habit.completed, 'text-gray-400': habit.completed, 'line-through': habit.completed }">
+                  {{ habit.name }}
+                </h3>
+                @if (habit.description) {
+                  <p 
+                    class="text-gray-600 text-sm mb-3"
+                    [class.text-gray-400]="habit.completed">
+                    {{ habit.description }}
+                  </p>
+                }
+                @if (habit.durationMinutes) {
+                  <p class="text-gray-600 text-sm mb-3" [class.text-gray-400]="habit.completed">
+                    Duración: {{ formatDuration(habit.durationMinutes) }}
+                  </p>
+                }
+                <div class="flex items-center gap-4 text-sm text-gray-500">
+                  <span class="flex items-center gap-1">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    {{ getCompletedDays(habit.id) }} día{{ getCompletedDays(habit.id) !== 1 ? 's' : '' }} completado{{ getCompletedDays(habit.id) !== 1 ? 's' : '' }}
+                  </span>
+                  <span class="text-gray-300">•</span>
+                  <span>Creado: {{ habit.createdAt | date:'dd/MM/yyyy' }}</span>
+                </div>
+              </div>
+
+              <!-- Botones de acción -->
+              <div class="flex items-center gap-2">
+                <!-- Botón editar -->
+                <a
+                  [routerLink]="['/habit', habit.id, 'edit']"
+                  class="flex-shrink-0 p-2 text-purple-600 hover:bg-purple-50 rounded-lg transition-colors duration-200"
+                  title="Editar hábito">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                  </svg>
+                </a>
+                <!-- Botón eliminar -->
+                <button
+                  (click)="openDeleteModal(habit.id)"
+                  class="flex-shrink-0 p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors duration-200"
+                  title="Eliminar hábito">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        }
+      }
+    </div>
+    
+    <!-- Modal de confirmación eliminación -->
+    @if (showDeleteModal()) {
+      <div class="fixed inset-0 z-50 flex items-center justify-center">
+        <!-- Backdrop -->
+        <div class="absolute inset-0 bg-black/40" (click)="closeDeleteModal()"></div>
+        <!-- Contenido -->
+        <div class="relative bg-white w-11/12 max-w-md rounded-xl shadow-2xl p-6">
+          <h4 class="text-lg font-semibold text-gray-800 mb-2">Eliminar hábito</h4>
+          <p class="text-gray-600 mb-6">Esta acción no se puede deshacer. ¿Deseas eliminarlo?</p>
+          <div class="flex gap-3">
+            <button (click)="confirmDelete()" class="flex-1 py-2 px-4 bg-red-600 hover:bg-red-700 text-white rounded-lg font-semibold transition-colors duration-200">Eliminar</button>
+            <button (click)="closeDeleteModal()" class="flex-1 py-2 px-4 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-lg font-semibold transition-colors duration-200">Cancelar</button>
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+</div>
+

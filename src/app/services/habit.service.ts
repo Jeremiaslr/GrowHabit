@@ -57,6 +57,33 @@ export class HabitService {
   }
 
   /**
+   * Actualiza un hábito existente
+   */
+  updateHabit(id: string, name: string, description?: string, durationMinutes?: number): void {
+    this.habits.update(habits =>
+      habits.map(habit => {
+        if (habit.id === id) {
+          return {
+            ...habit,
+            name,
+            description,
+            durationMinutes
+          };
+        }
+        return habit;
+      })
+    );
+    this.saveHabitsToStorage();
+  }
+
+  /**
+   * Obtiene un hábito por su ID
+   */
+  getHabitById(id: string): Habit | undefined {
+    return this.habits().find(h => h.id === id);
+  }
+
+  /**
    * Elimina un hábito
    */
   deleteHabit(id: string): void {
