@@ -1,0 +1,36 @@
+// Animación para el menú hamburguesa
+.menu-slide {
+  position: fixed;
+  top: 4rem; // 64px (altura del navbar)
+  left: 0;
+  right: 0;
+  z-index: 50;
+  background: white;
+  border-top: 1px solid #e5e7eb;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease-in-out, max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-origin: top;
+}
+
+.menu-closed {
+  transform: translateY(-100%);
+  opacity: 0;
+  max-height: 0;
+  pointer-events: none;
+}
+
+.menu-open {
+  transform: translateY(0);
+  opacity: 1;
+  max-height: 24rem; // 384px
+  pointer-events: auto;
+}
+
+// Animación suave para los iconos del botón hamburguesa
+button[aria-label="Toggle menu"] {
+  svg {
+    transition: transform 0.2s ease-in-out, opacity 0.2s ease-in-out;
+  }
+}
+

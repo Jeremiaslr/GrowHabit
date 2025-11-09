@@ -4,11 +4,12 @@ import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { HabitService } from '../../services/habit.service';
 import { AuthService } from '../../services/auth.service';
+import { NavbarComponent } from '../navbar/navbar.component';
 
 @Component({
   selector: 'app-habits-list',
   standalone: true,
-  imports: [FormsModule, CommonModule, RouterModule],
+  imports: [FormsModule, CommonModule, RouterModule, NavbarComponent],
   templateUrl: './habits-list.component.html',
   styleUrl: './habits-list.component.scss'
 })
@@ -32,13 +33,6 @@ export class HabitsListComponent {
     private router: Router
   ) {}
 
-  /**
-   * Cierra la sesión del usuario
-   */
-  logout(): void {
-    this.authService.logout();
-    this.router.navigate(['/login']);
-  }
 
   /**
    * Agrega un nuevo hábito

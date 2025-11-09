@@ -1,24 +1,14 @@
-<div class="min-h-screen bg-gradient-to-br from-purple-50 to-blue-50 py-8 px-4">
-  <div class="max-w-4xl mx-auto">
-    <!-- Barra superior con usuario y logout -->
-    <div class="flex justify-between items-center mb-6">
-      <div class="text-sm text-gray-600">
-        @if (authService.currentUser()) {
-          <span>Hola, <span class="font-semibold text-gray-800">{{ authService.currentUser() }}</span></span>
-        }
-      </div>
-      <button
-        (click)="logout()"
-        class="px-4 py-2 text-sm text-gray-700 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors duration-200">
-        Cerrar Sesión
-      </button>
-    </div>
+<div class="min-h-screen bg-gradient-to-br from-purple-50 to-blue-50">
+  <!-- Navbar -->
+  <app-navbar></app-navbar>
 
-    <!-- Header -->
-    <header class="text-center mb-8">
-      <h1 class="text-5xl font-bold text-gray-800 mb-2">GrowHabit</h1>
-      <p class="text-gray-600">Construye buenos hábitos, un día a la vez</p>
-    </header>
+  <div class="py-8 px-4">
+    <div class="max-w-4xl mx-auto">
+      <!-- Header -->
+      <header class="text-center mb-8">
+        <h1 class="text-5xl font-bold text-gray-800 mb-2">GrowHabit</h1>
+        <p class="text-gray-600">Construye buenos hábitos, un día a la vez</p>
+      </header>
 
     <!-- Agregar nuevo hábito -->
     <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
