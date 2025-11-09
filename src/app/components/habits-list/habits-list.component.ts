@@ -1,8 +1,9 @@
 import { Component, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { HabitService } from '../../services/habit.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-habits-list',
@@ -25,7 +26,19 @@ export class HabitsListComponent {
 
   categories = ['Salud', 'Trabajo', 'Estudio', 'Finanzas', 'Familia', 'Ocio', 'Otro'];
 
-  constructor(protected habitService: HabitService) {}
+  constructor(
+    protected habitService: HabitService,
+    protected authService: AuthService,
+    private router: Router
+  ) {}
+
+  /**
+   * Cierra la sesión del usuario
+   */
+  logout(): void {
+    this.authService.logout();
+    this.router.navigate(['/login']);
+  }
 
   /**
    * Agrega un nuevo hábito
