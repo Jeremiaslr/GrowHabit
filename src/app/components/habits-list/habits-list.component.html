@@ -10,6 +10,25 @@
         <p class="text-gray-600">Construye buenos hábitos, un día a la vez</p>
       </header>
 
+      <!-- Barra de progreso diario -->
+      @if (habitService.habits().length > 0) {
+        <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
+          <div class="flex items-center justify-between mb-3">
+            <h2 class="text-lg font-semibold text-gray-800">Progreso del día</h2>
+            <span class="text-sm font-medium text-purple-600">{{ dailyProgress() }}%</span>
+          </div>
+          <div class="w-full bg-gray-200 rounded-full h-4 overflow-hidden">
+            <div 
+              class="h-full bg-gradient-to-r from-purple-500 to-purple-600 rounded-full transition-all duration-500 ease-out"
+              [style.width.%]="dailyProgress()">
+            </div>
+          </div>
+          <p class="text-sm text-gray-500 mt-2">
+            {{ completedHabitsCount() }} de {{ habitService.habits().length }} hábitos completados hoy
+          </p>
+        </div>
+      }
+
     <!-- Agregar nuevo hábito -->
     <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
       @if (!showForm()) {
@@ -105,7 +124,7 @@
               Agregar Hábito
             </button>
             <button
-              (click)="showForm.set(false); newHabitName.set(''); newHabitDescription.set(''); newHabitHours.set(null); newHabitMinutes.set(null)"
+              (click)="showForm.set(false); newHabitName.set(''); newHabitDescription.set(''); newHabitHours.set(null); newHabitMinutes.set(null); newHabitCategory.set(null)"
               class="flex-1 py-2 px-4 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-lg font-semibold transition-colors duration-200">
               Cancelar
             </button>

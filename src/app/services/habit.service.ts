@@ -151,5 +151,18 @@ export class HabitService {
            date1.getMonth() === date2.getMonth() &&
            date1.getDate() === date2.getDate();
   }
+
+  /**
+   * Resetea el estado de completado de todos los hábitos al final del día
+   */
+  resetDailyCompletion(): void {
+    this.habits.update(habits =>
+      habits.map(habit => ({
+        ...habit,
+        completed: false
+      }))
+    );
+    this.saveHabitsToStorage();
+  }
 }
 
