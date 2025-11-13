@@ -32,6 +32,11 @@
           </span>
         }
         <button
+          (click)="navigateTo('/calendar')"
+          class="px-4 py-2 text-sm text-gray-700 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors duration-200">
+          Calendario
+        </button>
+        <button
           (click)="logout()"
           class="px-4 py-2 text-sm text-gray-700 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors duration-200">
           Cerrar Sesión
@@ -48,13 +53,18 @@
     <div class="px-2 pt-2 pb-3 space-y-1">
       @if (authService.currentUser()) {
         <div class="px-3 py-2 text-sm text-gray-600 border-b border-gray-200 mb-2">
-          {{ greeting() }}, <span class="font-semibold text-gray-800">{{ userName() }}</span>
+          {{ greeting() }}&nbsp;<span class="font-semibold text-gray-800">{{ userName() }}</span>
         </div>
       }
       <button
         (click)="navigateTo('/')"
         class="block w-full text-left px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-gray-900 rounded-md transition-colors duration-200">
         Mis Hábitos
+      </button>
+      <button
+        (click)="navigateTo('/calendar')"
+        class="block w-full text-left px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-gray-900 rounded-md transition-colors duration-200">
+        Calendario
       </button>
       <button
         (click)="logout()"

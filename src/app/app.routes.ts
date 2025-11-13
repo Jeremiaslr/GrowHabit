@@ -19,5 +19,10 @@ export const routes: Routes = [
     path: 'habit/:id/edit',
     canMatch: [authGuard],
     loadComponent: () => import('./components/habit-edit/habit-edit.component').then(m => m.HabitEditComponent)
+  },
+  {
+    path: 'calendar',
+    canMatch: [authGuard],
+    loadComponent: () => import('./components/calendar/calendar.component').then(m => m.CalendarComponent)
   }
 ];
