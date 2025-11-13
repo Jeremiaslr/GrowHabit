@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
@@ -17,6 +17,29 @@ export class NavbarComponent {
     protected authService: AuthService,
     private router: Router
   ) {}
+
+  /**
+   * Obtiene el saludo según la hora del día
+   */
+  greeting = computed(() => {
+    const hour = new Date().getHours();
+    if (hour >= 6 && hour < 13) {
+      return 'Buenos días';
+    } else if (hour >= 13 && hour < 20) {
+      return 'Buenas tardes';
+    } else {
+      return 'Buenas noches';
+    }
+  });
+
+  /**
+   * Obtiene el nombre de usuario formateado (primera letra mayúscula)
+   */
+  userName = computed(() => {
+    const user = this.authService.currentUser();
+    if (!user) return '';
+    return user.charAt(0).toUpperCase() + user.slice(1);
+  });
 
   /**
    * Alterna el estado del menú hamburguesa

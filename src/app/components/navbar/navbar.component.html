@@ -3,7 +3,7 @@
     <div class="flex justify-between items-center h-16">
       <!-- Logo y título -->
       <span class="flex items-center">
-        Hola, <span class="font-semibold text-gray-800">{{ authService.currentUser() }}</span>
+        {{ greeting() }}&nbsp;<span class="font-semibold text-gray-800">{{ userName() }}</span>
       </span>
 
       <!-- Botón hamburguesa (mobile) -->
@@ -28,7 +28,7 @@
       <div class="hidden md:flex md:items-center md:space-x-4">
         @if (authService.currentUser()) {
           <span class="text-sm text-gray-600">
-            Hola, <span class="font-semibold text-gray-800">{{ authService.currentUser() }}</span>
+            {{ greeting() }}&nbsp;<span class="font-semibold text-gray-800">{{ userName() }}</span>
           </span>
         }
         <button
@@ -48,7 +48,7 @@
     <div class="px-2 pt-2 pb-3 space-y-1">
       @if (authService.currentUser()) {
         <div class="px-3 py-2 text-sm text-gray-600 border-b border-gray-200 mb-2">
-          <span class="font-semibold text-gray-800">{{ authService.currentUser() }}</span>
+          {{ greeting() }}, <span class="font-semibold text-gray-800">{{ userName() }}</span>
         </div>
       }
       <button

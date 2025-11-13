@@ -43,6 +43,18 @@ export class HabitsListComponent implements OnInit, OnDestroy {
     return this.habitService.habits().filter(habit => habit.completed).length;
   });
 
+  // Obtiene el nombre de usuario formateado (primera letra mayúscula)
+  userName = computed(() => {
+    const user = this.authService.currentUser();
+    if (!user) return '';
+    return user.charAt(0).toUpperCase() + user.slice(1);
+  });
+
+  // Verifica si todos los hábitos están completados
+  isAllCompleted = computed(() => {
+    return this.dailyProgress() === 100;
+  });
+
   constructor(
     protected habitService: HabitService,
     protected authService: AuthService,
