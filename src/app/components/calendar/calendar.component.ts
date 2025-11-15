@@ -28,8 +28,8 @@ export class CalendarComponent {
     'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
   ];
 
-  // Nombres de los días de la semana en español
-  dayNames = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
+  // Nombres de los días de la semana en español (Lunes a Domingo)
+  dayNames = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'];
 
   constructor(protected habitService: HabitService) {}
 
@@ -55,7 +55,9 @@ export class CalendarComponent {
     const lastDay = new Date(year, month + 1, 0);
     
     // Día de la semana del primer día (0 = Domingo, 6 = Sábado)
+    // Convertimos a formato Lunes=0, Domingo=6
     const startDayOfWeek = firstDay.getDay();
+    const startDayMondayBased = startDayOfWeek === 0 ? 6 : startDayOfWeek - 1;
     
     // Días del mes anterior para completar la primera semana
     const prevMonth = new Date(year, month, 0);
@@ -65,8 +67,8 @@ export class CalendarComponent {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     
-    // Días del mes anterior
-    for (let i = startDayOfWeek - 1; i >= 0; i--) {
+    // Días del mes anterior (empezando desde Lunes)
+    for (let i = startDayMondayBased - 1; i >= 0; i--) {
       const dayDate = new Date(year, month - 1, daysInPrevMonth - i);
       days.push({
         date: dayDate,
@@ -89,8 +91,9 @@ export class CalendarComponent {
       });
     }
     
-    // Días del mes siguiente para completar la última semana
-    const remainingDays = 42 - days.length; // 6 semanas * 7 días = 42
+    // Días del mes siguiente para completar la última semana (múltiplo de 7 días)
+    const totalDays = days.length;
+    const remainingDays = Math.ceil(totalDays / 7) * 7 - totalDays;
     for (let day = 1; day <= remainingDays; day++) {
       const dayDate = new Date(year, month + 1, day);
       days.push({
