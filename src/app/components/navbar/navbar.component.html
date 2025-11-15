@@ -1,15 +1,16 @@
-<nav class="bg-white shadow-md sticky top-0 z-50">
+<nav class="shadow-md sticky top-0 z-50" style="background-color: #557F9F;">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex justify-between items-center h-16">
       <!-- Logo y título -->
-      <span class="flex items-center">
-        {{ greeting() }}&nbsp;<span class="font-semibold text-gray-800">{{ userName() }}</span>
+      <span class="flex items-center text-white">
+        {{ greeting() }}&nbsp;<span class="font-semibold">{{ userName() }}</span>
       </span>
 
       <!-- Botón hamburguesa (mobile) -->
       <button
         (click)="toggleMenu()"
-        class="md:hidden p-2 rounded-md text-gray-600 hover:text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-purple-500"
+        class="md:hidden p-2 rounded-md text-white hover:bg-white/20 focus:outline-none focus:ring-2"
+        style="--tw-ring-color: #F7F2D7;"
         aria-label="Toggle menu">
         @if (!isMenuOpen()) {
           <!-- Icono hamburguesa -->
@@ -27,18 +28,18 @@
       <!-- Menú desktop (oculto en mobile) -->
       <div class="hidden md:flex md:items-center md:space-x-4">
         @if (authService.currentUser()) {
-          <span class="text-sm text-gray-600">
-            {{ greeting() }}&nbsp;<span class="font-semibold text-gray-800">{{ userName() }}</span>
+          <span class="text-sm text-white">
+            {{ greeting() }}&nbsp;<span class="font-semibold">{{ userName() }}</span>
           </span>
         }
         <button
           (click)="navigateTo('/calendar')"
-          class="px-4 py-2 text-sm text-gray-700 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors duration-200">
+          class="px-4 py-2 text-sm text-white hover:bg-white/20 rounded-lg transition-colors duration-200">
           Calendario
         </button>
         <button
           (click)="logout()"
-          class="px-4 py-2 text-sm text-gray-700 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors duration-200">
+          class="px-4 py-2 text-sm text-white hover:bg-white/20 rounded-lg transition-colors duration-200">
           Cerrar Sesión
         </button>
       </div>
@@ -49,26 +50,22 @@
   <div 
     class="md:hidden menu-slide"
     [class.menu-open]="isMenuOpen()"
-    [class.menu-closed]="!isMenuOpen()">
+    [class.menu-closed]="!isMenuOpen()"
+    style="background-color: #557F9F;">
     <div class="px-2 pt-2 pb-3 space-y-1">
-      @if (authService.currentUser()) {
-        <div class="px-3 py-2 text-sm text-gray-600 border-b border-gray-200 mb-2">
-          {{ greeting() }}&nbsp;<span class="font-semibold text-gray-800">{{ userName() }}</span>
-        </div>
-      }
       <button
         (click)="navigateTo('/')"
-        class="block w-full text-left px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-gray-900 rounded-md transition-colors duration-200">
+        class="block w-full text-left px-3 py-2 text-base font-medium text-white hover:bg-white/20 rounded-md transition-colors duration-200">
         Mis Hábitos
       </button>
       <button
         (click)="navigateTo('/calendar')"
-        class="block w-full text-left px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-gray-900 rounded-md transition-colors duration-200">
+        class="block w-full text-left px-3 py-2 text-base font-medium text-white hover:bg-white/20 rounded-md transition-colors duration-200">
         Calendario
       </button>
       <button
         (click)="logout()"
-        class="block w-full text-left px-3 py-2 text-base font-medium text-red-600 hover:bg-red-50 hover:text-red-700 rounded-md transition-colors duration-200">
+        class="block w-full text-left px-3 py-2 text-base font-medium text-white hover:bg-white/20 rounded-md transition-colors duration-200">
         Cerrar Sesión
       </button>
     </div>

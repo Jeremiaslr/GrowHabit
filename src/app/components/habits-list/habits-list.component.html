@@ -1,4 +1,4 @@
-<div class="min-h-screen bg-gradient-to-br from-purple-50 to-blue-50">
+<div class="min-h-screen" style="background: linear-gradient(to bottom right, #F7F2D7, #E7D6AC);">
   <!-- Navbar -->
   <app-navbar></app-navbar>
 
@@ -12,14 +12,15 @@
 
       <!-- Barra de progreso diario -->
       @if (habitService.habits().length > 0) {
-        <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
+        <div class="rounded-lg shadow-lg p-6 mb-6" style="background-color: #F7F2D7;">
           <div class="flex items-center justify-between mb-3">
             <h2 class="text-lg font-semibold text-gray-800">Progreso del día</h2>
-            <span class="text-sm font-medium text-purple-600">{{ dailyProgress() }}%</span>
+            <span class="text-sm font-medium" style="color: #557F9F;">{{ dailyProgress() }}%</span>
           </div>
           <div class="w-full bg-gray-200 rounded-full h-4 overflow-hidden">
             <div 
-              class="h-full bg-gradient-to-r from-purple-500 to-purple-600 rounded-full transition-all duration-500 ease-out"
+              class="h-full rounded-full transition-all duration-500 ease-out"
+              style="background-color: #557F9F;"
               [style.width.%]="dailyProgress()">
             </div>
           </div>
@@ -29,18 +30,18 @@
           
           <!-- Mensaje de felicitación cuando se completa el 100% -->
           @if (isAllCompleted() && userName()) {
-            <div class="mt-4 p-4 bg-gradient-to-r from-purple-100 to-pink-100 rounded-lg border-2 border-purple-300 animate-pulse">
+            <div class="mt-4 p-4 rounded-lg border-2 animate-pulse" style="background-color: #E7D6AC; border-color: #557F9F;">
               <div class="flex items-center gap-3">
                 <div class="flex-shrink-0">
-                  <svg class="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg class="w-8 h-8" style="color: #557F9F;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                   </svg>
                 </div>
                 <div>
-                  <p class="text-lg font-bold text-purple-800">
+                  <p class="text-lg font-bold" style="color: #557F9F;">
                     ¡Enhorabuena, {{ userName() }}! 🎉
                   </p>
-                  <p class="text-sm text-purple-700 mt-1">
+                  <p class="text-sm mt-1" style="color: #9D8888;">
                     Has completado todos tus hábitos hoy. ¡Sigue así!
                   </p>
                 </div>
@@ -51,11 +52,14 @@
       }
 
     <!-- Agregar nuevo hábito -->
-    <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
+    <div class="rounded-lg shadow-lg p-6 mb-6" style="background-color: #F7F2D7;">
       @if (!showForm()) {
         <button 
           (click)="showForm.set(true)"
-          class="w-full py-3 px-4 bg-purple-600 hover:bg-purple-700 text-white rounded-lg font-semibold transition-colors duration-200 flex items-center justify-center gap-2">
+          class="w-full py-3 px-4 text-white rounded-lg font-semibold transition-colors duration-200 flex items-center justify-center gap-2"
+          style="background-color: #557F9F;" 
+          onmouseover="this.style.backgroundColor='#4a6f8a'" 
+          onmouseout="this.style.backgroundColor='#557F9F'">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
           </svg>
@@ -73,7 +77,8 @@
               [ngModel]="newHabitName()"
               (ngModelChange)="newHabitName.set($event)"
               placeholder="Ej: Hacer ejercicio, Leer, Meditar..."
-              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:border-transparent"
+              style="--tw-ring-color: #557F9F;"
               (keyup.enter)="addHabit()"
             />
           </div>
@@ -92,7 +97,8 @@
                   [ngModel]="newHabitHours() ?? ''"
                   (ngModelChange)="newHabitHours.set($event === '' ? null : ( +$event || null))"
                   placeholder="0"
-                  class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                  class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:border-transparent"
+                  style="--tw-ring-color: #557F9F;"
                 />
               </div>
               <div class="flex-1">
@@ -106,7 +112,8 @@
                   [ngModel]="newHabitMinutes() ?? ''"
                   (ngModelChange)="newHabitMinutes.set($event === '' ? null : ( +$event || null))"
                   placeholder="0"
-                  class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                  class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:border-transparent"
+                  style="--tw-ring-color: #557F9F;"
                 />
               </div>
             </div>
@@ -119,7 +126,8 @@
               id="habitCategory"
               [ngModel]="newHabitCategory() ?? ''"
               (ngModelChange)="newHabitCategory.set($event === '' ? null : $event)"
-              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:border-transparent"
+              style="--tw-ring-color: #557F9F;"
             >
               <option value="">Sin categoría</option>
               <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
@@ -135,13 +143,17 @@
               (ngModelChange)="newHabitDescription.set($event)"
               placeholder="Agrega una descripción opcional..."
               rows="3"
-              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:border-transparent"
+              style="--tw-ring-color: #557F9F;"
             ></textarea>
           </div>
           <div class="flex gap-3">
             <button
               (click)="addHabit()"
-              class="flex-1 py-2 px-4 bg-purple-600 hover:bg-purple-700 text-white rounded-lg font-semibold transition-colors duration-200">
+              class="flex-1 py-2 px-4 text-white rounded-lg font-semibold transition-colors duration-200"
+              style="background-color: #557F9F;" 
+              onmouseover="this.style.backgroundColor='#4a6f8a'" 
+              onmouseout="this.style.backgroundColor='#557F9F'">
               Agregar Hábito
             </button>
             <button
@@ -157,7 +169,7 @@
     <!-- Lista de hábitos -->
     <div class="space-y-4">
       @if (habitService.habits().length === 0) {
-        <div class="bg-white rounded-lg shadow-lg p-12 text-center">
+        <div class="rounded-lg shadow-lg p-12 text-center" style="background-color: #F7F2D7;">
           <svg class="w-16 h-16 mx-auto text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
           </svg>
@@ -166,14 +178,14 @@
         </div>
       } @else {
         @for (habit of habitService.habits(); track habit.id) {
-          <div class="bg-white rounded-lg shadow-lg p-6 hover:shadow-xl transition-shadow duration-200">
+          <div class="rounded-lg shadow-lg p-6 hover:shadow-xl transition-shadow duration-200" style="background-color: #F7F2D7;">
             <div class="flex items-start gap-4">
               <!-- Checkbox -->
               <button
                 (click)="toggleHabit(habit.id)"
                 class="mt-1 flex-shrink-0 w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all duration-200"
-                [class.border-purple-600]="!habit.completed"
-                [class.bg-purple-600]="habit.completed"
+                [style.border-color]="!habit.completed ? '#557F9F' : '#557F9F'"
+                [style.backgroundColor]="habit.completed ? '#557F9F' : 'transparent'"
                 [class.border-transparent]="habit.completed"
               >
                 @if (habit.completed) {
@@ -191,7 +203,7 @@
                   {{ habit.name }}
                 </h3>
                 @if (habit.category) {
-                  <span class="inline-block text-xs px-2 py-1 bg-purple-100 text-purple-700 rounded-full mb-2">{{ habit.category }}</span>
+                  <span class="inline-block text-xs px-2 py-1 rounded-full mb-2" style="background-color: #E7D6AC; color: #557F9F;">{{ habit.category }}</span>
                 }
                 @if (habit.description) {
                   <p 
@@ -222,7 +234,10 @@
                 <!-- Botón editar -->
                 <a
                   [routerLink]="['/habit', habit.id, 'edit']"
-                  class="flex-shrink-0 p-2 text-purple-600 hover:bg-purple-50 rounded-lg transition-colors duration-200"
+                  class="flex-shrink-0 p-2 rounded-lg transition-colors duration-200"
+                  style="color: #557F9F;" 
+                  onmouseover="this.style.backgroundColor='#E7D6AC'" 
+                  onmouseout="this.style.backgroundColor='transparent'"
                   title="Editar hábito">
                   <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
@@ -250,11 +265,11 @@
         <!-- Backdrop -->
         <div class="absolute inset-0 bg-black/40" (click)="closeDeleteModal()"></div>
         <!-- Contenido -->
-        <div class="relative bg-white w-11/12 max-w-md rounded-xl shadow-2xl p-6">
+        <div class="relative w-11/12 max-w-md rounded-xl shadow-2xl p-6" style="background-color: #F7F2D7;">
           <h4 class="text-lg font-semibold text-gray-800 mb-2">Eliminar hábito</h4>
           <p class="text-gray-600 mb-6">Esta acción no se puede deshacer. ¿Deseas eliminarlo?</p>
           <div class="flex gap-3">
-            <button (click)="confirmDelete()" class="flex-1 py-2 px-4 bg-red-600 hover:bg-red-700 text-white rounded-lg font-semibold transition-colors duration-200">Eliminar</button>
+            <button (click)="confirmDelete()" class="flex-1 py-2 px-4 text-white rounded-lg font-semibold transition-colors duration-200" style="background-color: #9D8888;" onmouseover="this.style.backgroundColor='#8a7777'" onmouseout="this.style.backgroundColor='#9D8888'">Eliminar</button>
             <button (click)="closeDeleteModal()" class="flex-1 py-2 px-4 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-lg font-semibold transition-colors duration-200">Cancelar</button>
           </div>
         </div>
