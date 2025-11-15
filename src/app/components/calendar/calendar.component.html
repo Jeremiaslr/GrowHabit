@@ -3,17 +3,133 @@
   <app-navbar></app-navbar>
 
   <div class="py-8 px-4">
-    <div class="max-w-4xl mx-auto">
+    <div class="max-w-5xl mx-auto">
       <!-- Header -->
       <header class="text-center mb-8">
         <h1 class="text-5xl font-bold text-gray-800 mb-2">Calendario</h1>
         <p class="text-gray-600">Visualiza tu progreso de hábitos</p>
       </header>
 
-      <!-- Contenido del calendario -->
-      <div class="bg-white rounded-lg shadow-lg p-6">
-        <p class="text-gray-600 text-center">El calendario estará disponible próximamente</p>
+      <!-- Controles del calendario -->
+      <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
+        <div class="flex items-center justify-between mb-6">
+          <button
+            (click)="previousMonth()"
+            class="p-2 rounded-lg hover:bg-gray-100 transition-colors duration-200"
+            aria-label="Mes anterior">
+            <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+            </svg>
+          </button>
+          
+          <div class="text-center">
+            <h2 class="text-2xl font-bold text-gray-800">
+              {{ currentMonth() }} {{ currentYear() }}
+            </h2>
+            <button
+              (click)="goToToday()"
+              class="mt-1 text-sm text-purple-600 hover:text-purple-700 font-medium">
+              Ir a hoy
+            </button>
+          </div>
+          
+          <button
+            (click)="nextMonth()"
+            class="p-2 rounded-lg hover:bg-gray-100 transition-colors duration-200"
+            aria-label="Mes siguiente">
+            <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+            </svg>
+          </button>
+        </div>
+
+        <!-- Calendario -->
+        <div class="grid grid-cols-7 gap-2">
+          <!-- Encabezados de días -->
+          @for (dayName of dayNames; track dayName) {
+            <div class="text-center py-2 font-semibold text-gray-600 text-sm">
+              {{ dayName }}
+            </div>
+          }
+
+          <!-- Días del calendario -->
+          @for (day of calendarDays(); track day.date.getTime()) {
+            <div
+              class="relative aspect-square p-2 rounded-lg border-2 transition-all duration-200 cursor-pointer
+                     @if (day.isCurrentMonth) {
+                       @if (day.isToday) {
+                         bg-purple-100 border-purple-400 shadow-md
+                       } @else {
+                         bg-gray-50 border-gray-200 hover:border-purple-300 hover:bg-purple-50
+                       }
+                     } @else {
+                       bg-gray-100 border-gray-100 opacity-50
+                     }">
+              <div class="flex flex-col h-full">
+                <span
+                  class="text-sm font-medium mb-1
+                         @if (day.isCurrentMonth) {
+                           @if (day.isToday) {
+                             text-purple-700
+                           } @else {
+                             text-gray-700
+                           }
+                         } @else {
+                           text-gray-400
+                         }">
+                  {{ day.dayNumber }}
+                </span>
+                
+                @if (day.completedHabitsCount > 0) {
+                  <div class="flex-1 flex items-center justify-center">
+                    <div class="flex flex-wrap gap-1 justify-center">
+                      @for (i of getArray(min(day.completedHabitsCount, 3)); track i) {
+                        <div class="w-2 h-2 rounded-full bg-purple-500"></div>
+                      }
+                      @if (day.completedHabitsCount > 3) {
+                        <span class="text-xs text-purple-600 font-semibold">+{{ day.completedHabitsCount - 3 }}</span>
+                      }
+                    </div>
+                  </div>
+                }
+              </div>
+            </div>
+          }
+        </div>
+
+        <!-- Leyenda -->
+        <div class="mt-6 pt-6 border-t border-gray-200 flex items-center justify-center gap-6 flex-wrap">
+          <div class="flex items-center gap-2">
+            <div class="w-4 h-4 rounded-lg bg-purple-100 border-2 border-purple-400"></div>
+            <span class="text-sm text-gray-600">Hoy</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <div class="w-2 h-2 rounded-full bg-purple-500"></div>
+            <span class="text-sm text-gray-600">Hábito completado</span>
+          </div>
+        </div>
       </div>
+
+      <!-- Resumen del mes -->
+      @if (habitService.habits().length > 0) {
+        <div class="bg-white rounded-lg shadow-lg p-6">
+          <h3 class="text-lg font-semibold text-gray-800 mb-4">Resumen del mes</h3>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="text-center p-4 bg-purple-50 rounded-lg">
+              <p class="text-3xl font-bold text-purple-600">{{ getTotalCompletedDays() }}</p>
+              <p class="text-sm text-gray-600 mt-1">Días con hábitos completados</p>
+            </div>
+            <div class="text-center p-4 bg-blue-50 rounded-lg">
+              <p class="text-3xl font-bold text-blue-600">{{ habitService.habits().length }}</p>
+              <p class="text-sm text-gray-600 mt-1">Total de hábitos</p>
+            </div>
+            <div class="text-center p-4 bg-green-50 rounded-lg">
+              <p class="text-3xl font-bold text-green-600">{{ getCompletionRate() }}%</p>
+              <p class="text-sm text-gray-600 mt-1">Tasa de completado</p>
+            </div>
+          </div>
+        </div>
+      }
     </div>
   </div>
 </div>
