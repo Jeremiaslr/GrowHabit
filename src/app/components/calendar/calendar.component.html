@@ -65,48 +65,45 @@
                      } @else {
                        bg-gray-100 border-gray-100 opacity-50
                      }">
-              <div class="flex flex-col h-full">
-                <span
-                  class="text-sm font-medium mb-1
-                         @if (day.isCurrentMonth) {
-                           @if (day.isToday) {
-                             text-purple-700
-                           } @else {
-                             text-gray-700
-                           }
-                         } @else {
-                           text-gray-400
-                         }">
-                  {{ day.dayNumber }}
-                </span>
-                
-                @if (day.completedHabitsCount > 0) {
-                  <div class="flex-1 flex items-center justify-center">
-                    <div class="flex flex-wrap gap-1 justify-center">
-                      @for (i of getArray(min(day.completedHabitsCount, 3)); track i) {
-                        <div class="w-2 h-2 rounded-full bg-purple-500"></div>
-                      }
-                      @if (day.completedHabitsCount > 3) {
-                        <span class="text-xs text-purple-600 font-semibold">+{{ day.completedHabitsCount - 3 }}</span>
-                      }
-                    </div>
-                  </div>
-                }
+              <div class="flex flex-col h-full items-center justify-start">
+                <!-- Contenedor del número con círculo de progreso -->
+                <div class="relative flex items-center justify-center mb-1">
+                  <!-- Círculo de progreso SVG -->
+                  <svg class="absolute w-8 h-8" viewBox="0 0 32 32">
+                    <defs>
+                      <clipPath [attr.id]="'clip-' + day.date.getTime()">
+                        <path [attr.d]="getArcPath(getCompletionPercentage(day))" />
+                      </clipPath>
+                    </defs>
+                    <!-- Círculo de fondo gris -->
+                    <circle
+                      cx="16"
+                      cy="16"
+                      r="14"
+                      fill="currentColor"
+                      class="text-gray-200"
+                    />
+                    <!-- Círculo de progreso morado (relleno sólido proporcional) -->
+                    @if (day.completedHabitsCount > 0 && habitService.habits().length > 0) {
+                      <circle
+                        cx="16"
+                        cy="16"
+                        r="14"
+                        fill="currentColor"
+                        [attr.clip-path]="'url(#clip-' + day.date.getTime() + ')'"
+                        class="text-purple-500 transition-all duration-300"
+                      />
+                    }
+                  </svg>
+                  <!-- Número del día -->
+                  <span
+                    class="relative text-sm font-medium text-center z-10 text-black">
+                    {{ day.dayNumber }}
+                  </span>
+                </div>
               </div>
             </div>
           }
-        </div>
-
-        <!-- Leyenda -->
-        <div class="mt-6 pt-6 border-t border-gray-200 flex items-center justify-center gap-6 flex-wrap">
-          <div class="flex items-center gap-2">
-            <div class="w-4 h-4 rounded-lg bg-purple-100 border-2 border-purple-400"></div>
-            <span class="text-sm text-gray-600">Hoy</span>
-          </div>
-          <div class="flex items-center gap-2">
-            <div class="w-2 h-2 rounded-full bg-purple-500"></div>
-            <span class="text-sm text-gray-600">Hábito completado</span>
-          </div>
         </div>
       </div>
 

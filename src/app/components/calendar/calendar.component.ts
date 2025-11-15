@@ -205,5 +205,41 @@ export class CalendarComponent {
   min(a: number, b: number): number {
     return Math.min(a, b);
   }
+
+  /**
+   * Calcula el porcentaje de completado para un día específico
+   */
+  getCompletionPercentage(day: CalendarDay): number {
+    const totalHabits = this.habitService.habits().length;
+    if (totalHabits === 0) return 0;
+    return Math.round((day.completedHabitsCount / totalHabits) * 100);
+  }
+
+  /**
+   * Genera el path del arco para el clipPath del círculo de progreso
+   * El círculo se rellena desde arriba en sentido horario
+   */
+  getArcPath(percentage: number): string {
+    if (percentage === 0) return '';
+    if (percentage === 100) return 'M 0 0 L 32 0 L 32 32 L 0 32 Z'; // Relleno completo
+    
+    const radius = 14;
+    const centerX = 16;
+    const centerY = 16;
+    
+    // Convertir porcentaje a ángulo (empezar desde arriba, sentido horario)
+    const angle = (percentage / 100) * 360 - 90;
+    const angleRad = (angle * Math.PI) / 180;
+    
+    // Calcular el punto final del arco
+    const x = centerX + radius * Math.cos(angleRad);
+    const y = centerY + radius * Math.sin(angleRad);
+    
+    // Determinar si necesitamos el arco grande o pequeño
+    const largeArcFlag = percentage > 50 ? 1 : 0;
+    
+    // Crear el path: Mover al centro, línea al inicio (arriba), arco hasta el punto final, cerrar
+    return `M ${centerX} ${centerY} L ${centerX} ${centerY - radius} A ${radius} ${radius} 0 ${largeArcFlag} 1 ${x} ${y} Z`;
+  }
 }
 
