@@ -1,6 +1,7 @@
 import { Component, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, RouterModule } from '@angular/router';
+import { Router, RouterModule, NavigationEnd } from '@angular/router';
+import { filter } from 'rxjs/operators';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
@@ -12,11 +13,29 @@ import { AuthService } from '../../services/auth.service';
 })
 export class NavbarComponent {
   isMenuOpen = signal(false);
+  currentRoute = signal<string>('');
 
   constructor(
     protected authService: AuthService,
     private router: Router
-  ) {}
+  ) {
+    // Actualizar la ruta actual cuando cambie
+    this.router.events
+      .pipe(filter(event => event instanceof NavigationEnd))
+      .subscribe((event: any) => {
+        this.currentRoute.set(event.url);
+      });
+    
+    // Inicializar con la ruta actual
+    this.currentRoute.set(this.router.url);
+  }
+
+  /**
+   * Verifica si estamos en la vista del calendario
+   */
+  isCalendarRoute = computed(() => {
+    return this.currentRoute().includes('/calendar');
+  });
 
   /**
    * Obtiene el saludo según la hora del día

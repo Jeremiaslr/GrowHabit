@@ -16,6 +16,11 @@ export const routes: Routes = [
     loadComponent: () => import('./components/habits-list/habits-list.component').then(m => m.HabitsListComponent)
   },
   {
+    path: 'habit/add',
+    canMatch: [authGuard],
+    loadComponent: () => import('./components/habit-add/habit-add.component').then(m => m.HabitAddComponent)
+  },
+  {
     path: 'habit/:id/edit',
     canMatch: [authGuard],
     loadComponent: () => import('./components/habit-edit/habit-edit.component').then(m => m.HabitEditComponent)

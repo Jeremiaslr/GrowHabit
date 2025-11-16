@@ -32,11 +32,19 @@
             {{ greeting() }}&nbsp;<span class="font-semibold">{{ userName() }}</span>
           </span>
         }
-        <button
-          (click)="navigateTo('/calendar')"
-          class="px-4 py-2 text-sm text-white hover:bg-white/20 rounded-lg transition-colors duration-200">
-          Calendario
-        </button>
+        @if (isCalendarRoute()) {
+          <button
+            (click)="navigateTo('/')"
+            class="px-4 py-2 text-sm text-white hover:bg-white/20 rounded-lg transition-colors duration-200">
+            Ir al Inicio
+          </button>
+        } @else {
+          <button
+            (click)="navigateTo('/calendar')"
+            class="px-4 py-2 text-sm text-white hover:bg-white/20 rounded-lg transition-colors duration-200">
+            Calendario
+          </button>
+        }
         <button
           (click)="logout()"
           class="px-4 py-2 text-sm text-white hover:bg-white/20 rounded-lg transition-colors duration-200">
@@ -53,16 +61,24 @@
     [class.menu-closed]="!isMenuOpen()"
     style="background-color: #557F9F;">
     <div class="px-2 pt-2 pb-3 space-y-1">
-      <button
-        (click)="navigateTo('/')"
-        class="block w-full text-left px-3 py-2 text-base font-medium text-white hover:bg-white/20 rounded-md transition-colors duration-200">
-        Mis Hábitos
-      </button>
-      <button
-        (click)="navigateTo('/calendar')"
-        class="block w-full text-left px-3 py-2 text-base font-medium text-white hover:bg-white/20 rounded-md transition-colors duration-200">
-        Calendario
-      </button>
+      @if (isCalendarRoute()) {
+        <button
+          (click)="navigateTo('/')"
+          class="block w-full text-left px-3 py-2 text-base font-medium text-white hover:bg-white/20 rounded-md transition-colors duration-200">
+          Ir al Inicio
+        </button>
+      } @else {
+        <button
+          (click)="navigateTo('/')"
+          class="block w-full text-left px-3 py-2 text-base font-medium text-white hover:bg-white/20 rounded-md transition-colors duration-200">
+          Mis Hábitos
+        </button>
+        <button
+          (click)="navigateTo('/calendar')"
+          class="block w-full text-left px-3 py-2 text-base font-medium text-white hover:bg-white/20 rounded-md transition-colors duration-200">
+          Calendario
+        </button>
+      }
       <button
         (click)="logout()"
         class="block w-full text-left px-3 py-2 text-base font-medium text-white hover:bg-white/20 rounded-md transition-colors duration-200">
