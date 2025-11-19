@@ -67,6 +67,61 @@ export class AuthService {
   }
 
   /**
+   * Actualiza los datos del usuario autenticado
+   */
+  updateUser(options: { username: string; currentPassword: string; newPassword?: string }): { success: boolean; message?: string } {
+    const activeUser = this.currentUser();
+    if (!activeUser) {
+      return { success: false, message: 'No hay sesión activa' };
+    }
+
+    const normalizedCurrent = activeUser.trim().toLowerCase();
+    const normalizedUsername = options.username.trim().toLowerCase();
+
+    if (!normalizedUsername) {
+      return { success: false, message: 'El nombre de usuario es requerido' };
+    }
+
+    if (!options.currentPassword) {
+      return { success: false, message: 'Debes ingresar tu contraseña actual' };
+    }
+
+    if (options.newPassword && options.newPassword.length < 4) {
+      return { success: false, message: 'La nueva contraseña debe tener al menos 4 caracteres' };
+    }
+
+    const users = this.getUsers();
+    const currentIndex = users.findIndex(u => u.username === normalizedCurrent);
+
+    if (currentIndex === -1) {
+      return { success: false, message: 'Usuario actual no encontrado' };
+    }
+
+    const currentUser = users[currentIndex];
+
+    if (currentUser.password !== options.currentPassword) {
+      return { success: false, message: 'Contraseña actual incorrecta' };
+    }
+
+    if (normalizedUsername !== normalizedCurrent && users.some(u => u.username === normalizedUsername)) {
+      return { success: false, message: 'El nuevo usuario ya existe' };
+    }
+
+    const updatedPassword = options.newPassword?.trim() ? options.newPassword : currentUser.password;
+
+    users[currentIndex] = {
+      username: normalizedUsername,
+      password: updatedPassword
+    };
+
+    this.saveUsers(users);
+    this.currentUser.set(normalizedUsername);
+    this.saveSession(normalizedUsername);
+
+    return { success: true, message: 'Perfil actualizado correctamente' };
+  }
+
+  /**
    * Cierra sesión
    */
   logout(): void {

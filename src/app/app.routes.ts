@@ -34,5 +34,10 @@ export const routes: Routes = [
     path: 'profile',
     canMatch: [authGuard],
     loadComponent: () => import('./components/profile/profile.component').then(m => m.ProfileComponent)
+  },
+  {
+    path: 'profile/edit',
+    canMatch: [authGuard],
+    loadComponent: () => import('./components/profile-edit/profile-edit.component').then(m => m.ProfileEditComponent)
   }
 ];

@@ -1,0 +1,82 @@
+<div class="profile-edit-page">
+  <app-navbar></app-navbar>
+
+  <main class="profile-edit-container">
+    <section class="card">
+      <header class="card-header">
+        <div>
+          <p class="eyebrow">Configuración</p>
+          <h1>Edita tu perfil</h1>
+          <p class="subtitle">Actualiza tu nombre de usuario o cambia tu contraseña.</p>
+        </div>
+        <button class="btn ghost" type="button" (click)="goBack()">Regresar</button>
+      </header>
+
+      <form (ngSubmit)="updateProfile()" autocomplete="off">
+        <div class="field">
+          <label for="username">Nombre de usuario</label>
+          <input
+            id="username"
+            type="text"
+            [(ngModel)]="username"
+            name="username"
+            placeholder="Introduce tu nuevo usuario"
+            required
+          />
+        </div>
+
+        <div class="field">
+          <label for="currentPassword">Contraseña actual</label>
+          <input
+            id="currentPassword"
+            type="password"
+            [(ngModel)]="currentPassword"
+            name="currentPassword"
+            placeholder="Confirma tu contraseña actual"
+            required
+          />
+        </div>
+
+        <div class="field">
+          <label for="newPassword">Nueva contraseña</label>
+          <input
+            id="newPassword"
+            type="password"
+            [(ngModel)]="newPassword"
+            name="newPassword"
+            placeholder="Deja en blanco para mantener la actual"
+            minlength="4"
+          />
+        </div>
+
+        <div class="field">
+          <label for="confirmPassword">Confirmar nueva contraseña</label>
+          <input
+            id="confirmPassword"
+            type="password"
+            [(ngModel)]="confirmPassword"
+            name="confirmPassword"
+            placeholder="Repite la nueva contraseña"
+            minlength="4"
+          />
+        </div>
+
+        @if (feedback) {
+          <div class="feedback" [class.error]="feedback?.type === 'error'" [class.success]="feedback?.type === 'success'">
+            {{ feedback?.message }}
+          </div>
+        }
+
+        <button class="btn primary w-full" type="submit" [disabled]="isSubmitting">
+          @if (isSubmitting) {
+            Guardando...
+          } @else {
+            Guardar cambios
+          }
+        </button>
+      </form>
+    </section>
+  </main>
+</div>
+
+

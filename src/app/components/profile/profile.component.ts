@@ -138,6 +138,10 @@ export class ProfileComponent {
     this.router.navigate(['/habit/add']);
   }
 
+  protected navigateToEditProfile(): void {
+    this.router.navigate(['/profile/edit']);
+  }
+
   protected formatDate(date: Date | null): string {
     if (!date) {
       return 'Sin registros';

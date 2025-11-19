@@ -1,0 +1,145 @@
+:host {
+  display: block;
+}
+
+.profile-edit-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f7f2d7, #e7d6ac);
+}
+
+.profile-edit-container {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem 4rem;
+}
+
+.card {
+  background: #fff;
+  border-radius: 1.5rem;
+  padding: 2.5rem;
+  box-shadow: 0 20px 40px rgba(85, 127, 159, 0.2);
+  border: 1px solid rgba(85, 127, 159, 0.1);
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.card-header h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+}
+
+.subtitle {
+  color: #6b7280;
+  margin: 0;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.field label {
+  font-weight: 600;
+  color: #374151;
+}
+
+.field input {
+  border: 1px solid rgba(55, 65, 81, 0.2);
+  border-radius: 0.85rem;
+  padding: 0.9rem 1rem;
+  font-size: 1rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.field input:focus {
+  border-color: #557f9f;
+  box-shadow: 0 0 0 3px rgba(85, 127, 159, 0.25);
+  outline: none;
+}
+
+.btn {
+  border: none;
+  border-radius: 999px;
+  padding: 0.9rem 1.75rem;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.btn.primary {
+  background: #557f9f;
+  color: #fff;
+  box-shadow: 0 15px 30px rgba(85, 127, 159, 0.25);
+}
+
+.btn.primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.btn.primary:not(:disabled):hover {
+  transform: translateY(-1px);
+  box-shadow: 0 20px 35px rgba(85, 127, 159, 0.3);
+}
+
+.btn.ghost {
+  background: rgba(85, 127, 159, 0.12);
+  color: #557f9f;
+}
+
+.feedback {
+  border-radius: 0.85rem;
+  padding: 0.85rem 1rem;
+  font-weight: 500;
+}
+
+.feedback.error {
+  background: rgba(239, 68, 68, 0.12);
+  color: #b91c1c;
+}
+
+.feedback.success {
+  background: rgba(34, 197, 94, 0.12);
+  color: #15803d;
+}
+
+.w-full {
+  width: 100%;
+}
+
+.eyebrow {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #9d8888;
+  margin-bottom: 0.35rem;
+}
+
+@media (max-width: 640px) {
+  .card {
+    padding: 1.75rem;
+  }
+
+  .card-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+
