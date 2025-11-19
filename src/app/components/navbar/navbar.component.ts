@@ -25,7 +25,7 @@ export class NavbarComponent {
       .subscribe((event: any) => {
         this.currentRoute.set(event.url);
       });
-    
+
     // Inicializar con la ruta actual
     this.currentRoute.set(this.router.url);
   }
@@ -36,6 +36,17 @@ export class NavbarComponent {
   isCalendarRoute = computed(() => {
     return this.currentRoute().includes('/calendar');
   });
+
+  /**
+   * Determina si una ruta de navegación está activa
+   */
+  isRouteActive(route: string): boolean {
+    const current = this.currentRoute();
+    if (route === '/') {
+      return current === '/' || current.startsWith('/habit');
+    }
+    return current.startsWith(route);
+  }
 
   /**
    * Obtiene el saludo según la hora del día

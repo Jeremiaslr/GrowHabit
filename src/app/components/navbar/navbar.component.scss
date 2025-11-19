@@ -34,3 +34,22 @@ button[aria-label="Toggle menu"] {
   }
 }
 
+.nav-link {
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  font-size: 0.9rem;
+  color: #ffffff;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.nav-link:hover,
+.nav-link:focus-visible {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.active-nav {
+  background-color: rgba(255, 255, 255, 0.25);
+  color: #f7f2d7;
+  font-weight: 600;
+}
+

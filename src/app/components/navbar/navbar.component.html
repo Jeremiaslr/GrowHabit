@@ -26,25 +26,30 @@
       </button>
 
       <!-- Menú desktop (oculto en mobile) -->
-      <div class="hidden md:flex md:items-center md:space-x-4">
+      <div class="hidden md:flex md:items-center md:space-x-3">
         @if (authService.currentUser()) {
-          <span class="text-sm text-white">
+          <span class="text-sm text-white mr-2">
             {{ greeting() }}&nbsp;<span class="font-semibold">{{ userName() }}</span>
           </span>
         }
-        @if (isCalendarRoute()) {
-          <button
-            (click)="navigateTo('/')"
-            class="px-4 py-2 text-sm text-white hover:bg-white/20 rounded-lg transition-colors duration-200">
-            Ir al Inicio
-          </button>
-        } @else {
-          <button
-            (click)="navigateTo('/calendar')"
-            class="px-4 py-2 text-sm text-white hover:bg-white/20 rounded-lg transition-colors duration-200">
-            Calendario
-          </button>
-        }
+        <button
+          (click)="navigateTo('/')"
+          class="nav-link"
+          [ngClass]="{ 'active-nav': isRouteActive('/') }">
+          Mis Hábitos
+        </button>
+        <button
+          (click)="navigateTo('/calendar')"
+          class="nav-link"
+          [ngClass]="{ 'active-nav': isRouteActive('/calendar') }">
+          Calendario
+        </button>
+        <button
+          (click)="navigateTo('/profile')"
+          class="nav-link"
+          [ngClass]="{ 'active-nav': isRouteActive('/profile') }">
+          Perfil
+        </button>
         <button
           (click)="logout()"
           class="px-4 py-2 text-sm text-white hover:bg-white/20 rounded-lg transition-colors duration-200">
@@ -61,24 +66,21 @@
     [class.menu-closed]="!isMenuOpen()"
     style="background-color: #557F9F;">
     <div class="px-2 pt-2 pb-3 space-y-1">
-      @if (isCalendarRoute()) {
-        <button
-          (click)="navigateTo('/')"
-          class="block w-full text-left px-3 py-2 text-base font-medium text-white hover:bg-white/20 rounded-md transition-colors duration-200">
-          Ir al Inicio
-        </button>
-      } @else {
-        <button
-          (click)="navigateTo('/')"
-          class="block w-full text-left px-3 py-2 text-base font-medium text-white hover:bg-white/20 rounded-md transition-colors duration-200">
-          Mis Hábitos
-        </button>
-        <button
-          (click)="navigateTo('/calendar')"
-          class="block w-full text-left px-3 py-2 text-base font-medium text-white hover:bg-white/20 rounded-md transition-colors duration-200">
-          Calendario
-        </button>
-      }
+      <button
+        (click)="navigateTo('/')"
+        class="block w-full text-left px-3 py-2 text-base font-medium text-white hover:bg-white/20 rounded-md transition-colors duration-200">
+        Mis Hábitos
+      </button>
+      <button
+        (click)="navigateTo('/calendar')"
+        class="block w-full text-left px-3 py-2 text-base font-medium text-white hover:bg-white/20 rounded-md transition-colors duration-200">
+        Calendario
+      </button>
+      <button
+        (click)="navigateTo('/profile')"
+        class="block w-full text-left px-3 py-2 text-base font-medium text-white hover:bg-white/20 rounded-md transition-colors duration-200">
+        Perfil
+      </button>
       <button
         (click)="logout()"
         class="block w-full text-left px-3 py-2 text-base font-medium text-white hover:bg-white/20 rounded-md transition-colors duration-200">
