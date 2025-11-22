@@ -4,8 +4,8 @@
 
 .profile-page {
   min-height: 100vh;
-  background: linear-gradient(135deg, #f7f2d7 0%, #e7d6ac 40%, #fdf5e6 100%);
-  color: #1f2937;
+  background: linear-gradient(135deg, var(--color-surface) 0%, var(--color-surface-accent) 40%, var(--color-surface-soft) 100%);
+  color: var(--color-text-primary);
 }
 
 .profile-container {
@@ -18,10 +18,11 @@
 }
 
 .card {
-  background: rgba(255, 255, 255, 0.9);
+  background: var(--color-card-bg);
   border-radius: 1.5rem;
-  box-shadow: 0 20px 50px rgba(85, 127, 159, 0.15);
-  border: 1px solid rgba(85, 127, 159, 0.1);
+  box-shadow: 0 20px 50px var(--shadow-color);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-primary);
 }
 
 .profile-hero {
@@ -46,7 +47,7 @@
   width: 120px;
   height: 120px;
   border-radius: 50%;
-  background: #557f9f;
+  background: var(--color-primary);
   color: #fff;
   display: flex;
   align-items: center;
@@ -71,7 +72,7 @@
 }
 
 .hero-details .subtitle {
-  color: #6b7280;
+  color: var(--color-text-muted);
   max-width: 32rem;
 }
 
@@ -89,7 +90,7 @@
 .label {
   display: block;
   font-size: 0.85rem;
-  color: #6b7280;
+  color: var(--color-text-muted);
   margin-bottom: 0.25rem;
   text-transform: uppercase;
   letter-spacing: 0.08em;
@@ -119,7 +120,7 @@
 }
 
 .btn.primary {
-  background: #557f9f;
+  background: var(--color-primary);
   color: #fff;
   box-shadow: 0 15px 30px rgba(85, 127, 159, 0.3);
 }
@@ -131,7 +132,7 @@
 
 .btn.ghost {
   background: rgba(85, 127, 159, 0.1);
-  color: #557f9f;
+  color: var(--color-primary);
 }
 
 .btn.ghost:hover {
@@ -140,7 +141,7 @@
 
 .btn.link {
   background: transparent;
-  color: #557f9f;
+  color: var(--color-primary);
   text-decoration: underline;
   text-decoration-color: rgba(85, 127, 159, 0.4);
 }
@@ -158,7 +159,7 @@
 }
 
 .stat-card.highlight {
-  background: linear-gradient(125deg, #557f9f, #9d8888);
+  background: linear-gradient(125deg, var(--color-primary), var(--color-secondary));
   color: #fff;
 }
 
@@ -173,7 +174,7 @@
 }
 
 .detail {
-  color: #6b7280;
+  color: var(--color-text-muted);
 }
 
 .stat-top {
@@ -211,7 +212,7 @@
 .progress {
   height: 100%;
   border-radius: inherit;
-  background: #557f9f;
+  background: var(--color-primary);
   transition: width 0.4s ease;
 }
 
@@ -242,7 +243,7 @@
 
 .mini-btn {
   background: rgba(85, 127, 159, 0.1);
-  color: #557f9f;
+  color: var(--color-primary);
   border: none;
   border-radius: 999px;
   padding: 0.4rem 1rem;
@@ -287,7 +288,7 @@
   height: 18px;
   border-radius: 50%;
   background: #fff;
-  border: 4px solid #557f9f;
+  border: 4px solid var(--color-primary);
   box-shadow: 0 0 0 4px rgba(85, 127, 159, 0.1);
   margin-top: 4px;
 }
@@ -318,7 +319,7 @@
 
 .pill {
   background: rgba(85, 127, 159, 0.1);
-  color: #557f9f;
+  color: var(--color-primary);
   padding: 0.35rem 0.9rem;
   border-radius: 999px;
   font-weight: 600;
@@ -331,14 +332,14 @@
 .empty-state {
   text-align: center;
   padding: 2rem 1rem;
-  color: #6b7280;
+  color: var(--color-text-muted);
 }
 
 .eyebrow {
   font-size: 0.85rem;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: #9d8888;
+  color: var(--color-secondary);
   margin-bottom: 0.35rem;
 }
 

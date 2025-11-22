@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Router, RouterModule, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { AuthService } from '../../services/auth.service';
+import { ThemeService } from '../../services/theme.service';
 
 @Component({
   selector: 'app-navbar',
@@ -15,9 +16,13 @@ export class NavbarComponent {
   isMenuOpen = signal(false);
   currentRoute = signal<string>('');
 
+  themeLabel = computed(() => this.themeService.isDarkMode() ? 'Modo claro' : 'Modo oscuro');
+  isDarkMode = computed(() => this.themeService.isDarkMode());
+
   constructor(
     protected authService: AuthService,
-    private router: Router
+    private router: Router,
+    private themeService: ThemeService
   ) {
     // Actualizar la ruta actual cuando cambie
     this.router.events
@@ -100,6 +105,10 @@ export class NavbarComponent {
   navigateTo(route: string): void {
     this.router.navigate([route]);
     this.closeMenu();
+  }
+
+  toggleTheme(): void {
+    this.themeService.toggleTheme();
   }
 }
 

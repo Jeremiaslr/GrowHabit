@@ -1,2 +1,113 @@
 /* You can add global styles to this file, and also import other style files */
 @import "tailwindcss";
+
+:root {
+  --color-primary: #557f9f;
+  --color-primary-hover: #4a6f8a;
+  --color-secondary: #9d8888;
+  --color-secondary-hover: #8a7777;
+  --color-background: #f7f2d7;
+  --color-surface: #f7f2d7;
+  --color-surface-accent: #e7d6ac;
+  --color-surface-soft: #fdf5e6;
+  --color-card-bg: #f7f2d7;
+  --color-navbar-bg: #557f9f;
+  --color-text-primary: #1f2937;
+  --color-text-inverse: #ffffff;
+  --color-text-muted: #6b7280;
+  --color-border: rgba(85, 127, 159, 0.15);
+  --gradient-main: linear-gradient(to bottom right, #f7f2d7, #e7d6ac);
+  --shadow-color: rgba(85, 127, 159, 0.2);
+}
+
+[data-theme='dark'] {
+  --color-primary: #7ab8ff;
+  --color-primary-hover: #5f9bd8;
+  --color-secondary: #d0b3ff;
+  --color-secondary-hover: #b590ff;
+  --color-background: #0f172a;
+  --color-surface: #121b2e;
+  --color-surface-accent: #1b2537;
+  --color-surface-soft: #182238;
+  --color-card-bg: #192438;
+  --color-navbar-bg: #0d1426;
+  --color-text-primary: #f8fafc;
+  --color-text-inverse: #0f172a;
+  --color-text-muted: #a0aec0;
+  --color-border: rgba(122, 184, 255, 0.2);
+  --gradient-main: linear-gradient(to bottom right, #111b2d, #0b121f);
+  --shadow-color: rgba(0, 0, 0, 0.5);
+}
+
+* {
+  transition: color 0.25s ease, background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: var(--color-background);
+  color: var(--color-text-primary);
+  min-height: 100vh;
+}
+
+button,
+input,
+textarea {
+  color: inherit;
+}
+
+.card-surface {
+  background-color: var(--color-card-bg);
+  border-color: var(--color-border);
+  color: var(--color-text-primary);
+}
+
+.surface-accent {
+  background-color: var(--color-surface-accent);
+}
+
+.text-primary {
+  color: var(--color-text-primary);
+}
+
+.text-muted {
+  color: var(--color-text-muted);
+}
+
+.primary-bg {
+  background-color: var(--color-primary);
+  color: var(--color-text-inverse);
+}
+
+.primary-border {
+  border-color: var(--color-primary);
+}
+
+.primary-color {
+  color: var(--color-primary);
+}
+
+.gradient-background {
+  background: var(--gradient-main);
+}
+
+[data-theme='dark'] .text-gray-800,
+[data-theme='dark'] .text-gray-700 {
+  color: var(--color-text-primary) !important;
+}
+
+[data-theme='dark'] .text-gray-600,
+[data-theme='dark'] .text-gray-500,
+[data-theme='dark'] .text-gray-400 {
+  color: var(--color-text-muted) !important;
+}
+
+[data-theme='dark'] .bg-gray-200,
+[data-theme='dark'] .bg-gray-100 {
+  background-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+[data-theme='dark'] .border-gray-300,
+[data-theme='dark'] .border-gray-200 {
+  border-color: var(--color-border) !important;
+}

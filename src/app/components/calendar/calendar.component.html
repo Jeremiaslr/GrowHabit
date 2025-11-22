@@ -1,4 +1,4 @@
-<div class="min-h-screen" style="background: linear-gradient(to bottom right, #F7F2D7, #E7D6AC);">
+<div class="min-h-screen" style="background: linear-gradient(to bottom right, var(--color-surface), var(--color-surface-accent));">
   <!-- Navbar -->
   <app-navbar></app-navbar>
 
@@ -11,7 +11,7 @@
       </header>
 
       <!-- Controles del calendario -->
-      <div class="rounded-lg shadow-lg p-6 mb-6" style="background-color: #F7F2D7;">
+      <div class="rounded-lg shadow-lg p-6 mb-6" style="background-color: var(--color-surface);">
         <div class="flex items-center justify-between mb-6">
           <button
             (click)="previousMonth()"
@@ -29,9 +29,9 @@
             <button
               (click)="goToToday()"
               class="mt-1 text-sm font-medium"
-              style="color: #557F9F;" 
-              onmouseover="this.style.color='#4a6f8a'" 
-              onmouseout="this.style.color='#557F9F'">
+              style="color: var(--color-primary);" 
+              onmouseover="this.style.color='var(--color-primary-hover)'" 
+              onmouseout="this.style.color='var(--color-primary)'">
               Ir a hoy
             </button>
           </div>
@@ -68,8 +68,8 @@
                      } @else {
                        bg-gray-100 border-gray-100 opacity-50
                      }"
-              [style.background-color]="day.isCurrentMonth ? '#F7F2D7' : '#f3f4f6'"
-              [style.border-color]="day.isCurrentMonth ? '#557F9F' : '#e5e7eb'">
+              [style.background-color]="day.isCurrentMonth ? 'var(--color-surface)' : '#f3f4f6'"
+              [style.border-color]="day.isCurrentMonth ? 'var(--color-primary)' : '#e5e7eb'">
               <div class="flex flex-col h-full items-center justify-start">
                 <!-- Contenedor del número con círculo de progreso -->
                 <div class="relative flex items-center justify-center mb-1">
@@ -96,7 +96,7 @@
                         r="14"
                         fill="currentColor"
                         [attr.clip-path]="'url(#clip-' + day.date.getTime() + ')'"
-                        style="color: #557F9F;"
+                        style="color: var(--color-primary);"
                         class="transition-all duration-300"
                       />
                     }
@@ -115,19 +115,19 @@
 
       <!-- Resumen del mes -->
       @if (habitService.habits().length > 0) {
-        <div class="rounded-lg shadow-lg p-6" style="background-color: #F7F2D7;">
+        <div class="rounded-lg shadow-lg p-6" style="background-color: var(--color-surface);">
           <h3 class="text-lg font-semibold text-gray-800 mb-4">Resumen del mes</h3>
           <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div class="text-center p-4 rounded-lg" style="background-color: #E7D6AC;">
-              <p class="text-3xl font-bold" style="color: #557F9F;">{{ getTotalCompletedDays() }}</p>
+            <div class="text-center p-4 rounded-lg" style="background-color: var(--color-surface-accent);">
+              <p class="text-3xl font-bold" style="color: var(--color-primary);">{{ getTotalCompletedDays() }}</p>
               <p class="text-sm text-gray-600 mt-1">Días con hábitos completados</p>
             </div>
-            <div class="text-center p-4 rounded-lg" style="background-color: #E7D6AC;">
-              <p class="text-3xl font-bold" style="color: #557F9F;">{{ habitService.habits().length }}</p>
+            <div class="text-center p-4 rounded-lg" style="background-color: var(--color-surface-accent);">
+              <p class="text-3xl font-bold" style="color: var(--color-primary);">{{ habitService.habits().length }}</p>
               <p class="text-sm text-gray-600 mt-1">Total de hábitos</p>
             </div>
-            <div class="text-center p-4 rounded-lg" style="background-color: #E7D6AC;">
-              <p class="text-3xl font-bold" style="color: #557F9F;">{{ getCompletionRate() }}%</p>
+            <div class="text-center p-4 rounded-lg" style="background-color: var(--color-surface-accent);">
+              <p class="text-3xl font-bold" style="color: var(--color-primary);">{{ getCompletionRate() }}%</p>
               <p class="text-sm text-gray-600 mt-1">Tasa de completado</p>
             </div>
           </div>

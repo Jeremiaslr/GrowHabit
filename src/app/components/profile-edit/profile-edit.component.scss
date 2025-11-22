@@ -4,7 +4,7 @@
 
 .profile-edit-page {
   min-height: 100vh;
-  background: linear-gradient(135deg, #f7f2d7, #e7d6ac);
+  background: linear-gradient(135deg, var(--color-surface), var(--color-surface-accent));
 }
 
 .profile-edit-container {
@@ -14,11 +14,12 @@
 }
 
 .card {
-  background: #fff;
+  background: var(--color-card-bg);
   border-radius: 1.5rem;
   padding: 2.5rem;
-  box-shadow: 0 20px 40px rgba(85, 127, 159, 0.2);
-  border: 1px solid rgba(85, 127, 159, 0.1);
+  box-shadow: 0 20px 40px var(--shadow-color);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-primary);
 }
 
 .card-header {
@@ -36,7 +37,7 @@
 }
 
 .subtitle {
-  color: #6b7280;
+  color: var(--color-text-muted);
   margin: 0;
 }
 
@@ -54,7 +55,7 @@ form {
 
 .field label {
   font-weight: 600;
-  color: #374151;
+  color: var(--color-text-primary);
 }
 
 .field input {
@@ -63,10 +64,12 @@ form {
   padding: 0.9rem 1rem;
   font-size: 1rem;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  background-color: var(--color-surface-soft);
+  color: var(--color-text-primary);
 }
 
 .field input:focus {
-  border-color: #557f9f;
+  border-color: var(--color-primary);
   box-shadow: 0 0 0 3px rgba(85, 127, 159, 0.25);
   outline: none;
 }
@@ -82,7 +85,7 @@ form {
 }
 
 .btn.primary {
-  background: #557f9f;
+  background: var(--color-primary);
   color: #fff;
   box-shadow: 0 15px 30px rgba(85, 127, 159, 0.25);
 }
@@ -100,7 +103,7 @@ form {
 
 .btn.ghost {
   background: rgba(85, 127, 159, 0.12);
-  color: #557f9f;
+  color: var(--color-primary);
 }
 
 .feedback {
@@ -127,7 +130,7 @@ form {
   font-size: 0.85rem;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: #9d8888;
+  color: var(--color-secondary);
   margin-bottom: 0.35rem;
 }
 
