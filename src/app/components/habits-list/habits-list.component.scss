@@ -1,2 +1,15 @@
-// Estilos específicos del componente si son necesarios
+:host {
+  display: block;
+}
+
+.danger-icon-button {
+  color: var(--color-danger);
+  background-color: transparent;
+}
+
+.danger-icon-button:hover,
+.danger-icon-button:focus-visible {
+  color: var(--color-danger-hover);
+  background-color: var(--color-danger-bg);
+}
 

@@ -32,24 +32,27 @@
             {{ greeting() }}&nbsp;<span class="font-semibold">{{ userName() }}</span>
           </span>
         }
-        <button
-          (click)="navigateTo('/')"
-          class="nav-link"
-          [ngClass]="{ 'active-nav': isRouteActive('/') }">
-          Mis Hábitos
-        </button>
-        <button
-          (click)="navigateTo('/calendar')"
-          class="nav-link"
-          [ngClass]="{ 'active-nav': isRouteActive('/calendar') }">
-          Calendario
-        </button>
-        <button
-          (click)="navigateTo('/profile')"
-          class="nav-link"
-          [ngClass]="{ 'active-nav': isRouteActive('/profile') }">
-          Perfil
-        </button>
+        @if (!isRouteActive('/')) {
+          <button
+            (click)="navigateTo('/')"
+            class="nav-link">
+            Mis Hábitos
+          </button>
+        }
+        @if (!isRouteActive('/calendar')) {
+          <button
+            (click)="navigateTo('/calendar')"
+            class="nav-link">
+            Calendario
+          </button>
+        }
+        @if (!isRouteActive('/profile')) {
+          <button
+            (click)="navigateTo('/profile')"
+            class="nav-link">
+            Perfil
+          </button>
+        }
         <button
           type="button"
           class="theme-toggle"
@@ -81,21 +84,27 @@
     [class.menu-closed]="!isMenuOpen()"
     style="background-color: var(--color-navbar-bg);">
     <div class="px-2 pt-2 pb-3 space-y-1">
-      <button
-        (click)="navigateTo('/')"
-        class="block w-full text-left px-3 py-2 text-base font-medium text-white hover:bg-white/20 rounded-md transition-colors duration-200">
-        Mis Hábitos
-      </button>
-      <button
-        (click)="navigateTo('/calendar')"
-        class="block w-full text-left px-3 py-2 text-base font-medium text-white hover:bg-white/20 rounded-md transition-colors duration-200">
-        Calendario
-      </button>
-      <button
-        (click)="navigateTo('/profile')"
-        class="block w-full text-left px-3 py-2 text-base font-medium text-white hover:bg-white/20 rounded-md transition-colors duration-200">
-        Perfil
-      </button>
+      @if (!isRouteActive('/')) {
+        <button
+          (click)="navigateTo('/')"
+          class="block w-full text-left px-3 py-2 text-base font-medium text-white hover:bg-white/20 rounded-md transition-colors duration-200">
+          Mis Hábitos
+        </button>
+      }
+      @if (!isRouteActive('/calendar')) {
+        <button
+          (click)="navigateTo('/calendar')"
+          class="block w-full text-left px-3 py-2 text-base font-medium text-white hover:bg-white/20 rounded-md transition-colors duration-200">
+          Calendario
+        </button>
+      }
+      @if (!isRouteActive('/profile')) {
+        <button
+          (click)="navigateTo('/profile')"
+          class="block w-full text-left px-3 py-2 text-base font-medium text-white hover:bg-white/20 rounded-md transition-colors duration-200">
+          Perfil
+        </button>
+      }
       <button
         type="button"
         (click)="toggleTheme()"
