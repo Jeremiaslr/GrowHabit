@@ -38,6 +38,14 @@ button[aria-label="Toggle menu"] {
   }
 }
 
+.hamburger-button {
+  color: #ffffff;
+}
+
+.hamburger-button svg {
+  stroke: currentColor;
+}
+
 .nav-link {
   display: inline-flex;
   align-items: center;

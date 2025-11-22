@@ -8,8 +8,8 @@
 
       <!-- Botón hamburguesa (mobile) -->
       <button
+        class="hamburger-button md:hidden p-2 rounded-md text-white hover:bg-white/20 focus:outline-none focus:ring-2"
         (click)="toggleMenu()"
-        class="md:hidden p-2 rounded-md text-white hover:bg-white/20 focus:outline-none focus:ring-2"
         style="--tw-ring-color: var(--color-surface);"
         aria-label="Toggle menu">
         @if (!isMenuOpen()) {
