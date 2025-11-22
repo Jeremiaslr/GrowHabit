@@ -36,6 +36,11 @@
           <button
             (click)="navigateTo('/')"
             class="nav-link">
+            <span class="nav-link-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+              </svg>
+            </span>
             Mis Hábitos
           </button>
         }
@@ -43,6 +48,11 @@
           <button
             (click)="navigateTo('/calendar')"
             class="nav-link">
+            <span class="nav-link-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V5m8 2V5m-9 4h10M5 9h14v10H5z" />
+              </svg>
+            </span>
             Calendario
           </button>
         }
@@ -50,27 +60,41 @@
           <button
             (click)="navigateTo('/profile')"
             class="nav-link">
+            <span class="nav-link-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.5 21a7.5 7.5 0 0113 0M12 11a4 4 0 100-8 4 4 0 000 8z" />
+              </svg>
+            </span>
             Perfil
           </button>
         }
         <button
           type="button"
-          class="theme-toggle"
-          (click)="toggleTheme()"
-          [attr.aria-pressed]="isDarkMode()">
-          @if (isDarkMode()) {
-            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M12 7a5 5 0 100 10 5 5 0 000-10z"/>
-            </svg>
-          } @else {
-            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>
-            </svg>
-          }
+          class="nav-link"
+          aria-label="Cambiar tema"
+          (click)="toggleTheme()">
+          <span class="nav-link-icon">
+            @if (isDarkMode()) {
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>
+              </svg>
+            } @else {
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M12 7a5 5 0 100 10 5 5 0 000-10z"/>
+              </svg>
+            }
+          </span>
+          {{ isDarkMode() ? 'Modo claro' : 'Modo oscuro' }}
         </button>
         <button
           (click)="logout()"
-          class="px-4 py-2 text-sm text-white hover:bg-white/20 rounded-lg transition-colors duration-200">
+          class="nav-link logout-link">
+          <span class="nav-link-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 21h6a2 2 0 002-2V5a2 2 0 00-2-2H9a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16l4-4-4-4m4 4H9"/>
+            </svg>
+          </span>
           Cerrar Sesión
         </button>
       </div>
@@ -87,37 +111,65 @@
       @if (!isRouteActive('/')) {
         <button
           (click)="navigateTo('/')"
-          class="block w-full text-left px-3 py-2 text-base font-medium text-white hover:bg-white/20 rounded-md transition-colors duration-200">
+          class="mobile-link">
+          <span class="nav-link-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+            </svg>
+          </span>
           Mis Hábitos
         </button>
       }
       @if (!isRouteActive('/calendar')) {
         <button
           (click)="navigateTo('/calendar')"
-          class="block w-full text-left px-3 py-2 text-base font-medium text-white hover:bg-white/20 rounded-md transition-colors duration-200">
+          class="mobile-link">
+          <span class="nav-link-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V5m8 2V5m-9 4h10M5 9h14v10H5z" />
+            </svg>
+          </span>
           Calendario
         </button>
       }
       @if (!isRouteActive('/profile')) {
         <button
           (click)="navigateTo('/profile')"
-          class="block w-full text-left px-3 py-2 text-base font-medium text-white hover:bg-white/20 rounded-md transition-colors duration-200">
+          class="mobile-link">
+          <span class="nav-link-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.5 21a7.5 7.5 0 0113 0M12 11a4 4 0 100-8 4 4 0 000 8z" />
+            </svg>
+          </span>
           Perfil
         </button>
       }
       <button
         type="button"
         (click)="toggleTheme()"
-        class="block w-full text-left px-3 py-2 text-base font-medium text-white hover:bg-white/20 rounded-md transition-colors duration-200">
-        @if (isDarkMode()) {
-          Cambiar a modo claro
-        } @else {
-          Cambiar a modo oscuro
-        }
+        class="mobile-link">
+        <span class="nav-link-icon">
+          @if (isDarkMode()) {
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" />
+            </svg>
+          } @else {
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M12 7a5 5 0 100 10 5 5 0 000-10z" />
+            </svg>
+          }
+        </span>
+        {{ isDarkMode() ? 'Modo claro' : 'Modo oscuro' }}
       </button>
       <button
         (click)="logout()"
-        class="block w-full text-left px-3 py-2 text-base font-medium text-white hover:bg-white/20 rounded-md transition-colors duration-200">
+        class="mobile-link logout-link">
+        <span class="nav-link-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 21h6a2 2 0 002-2V5a2 2 0 00-2-2H9a2 2 0 00-2 2v14a2 2 0 002 2z" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16l4-4-4-4m4 4H9" />
+          </svg>
+        </span>
         Cerrar Sesión
       </button>
     </div>
