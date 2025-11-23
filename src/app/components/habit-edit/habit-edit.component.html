@@ -78,6 +78,84 @@
         </div>
 
         <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">
+            Frecuencia del hábito
+          </label>
+          <div class="grid gap-3 md:grid-cols-2">
+            @for (option of frequencyOptions; track option.value) {
+              <label
+                class="cursor-pointer rounded-lg border p-3 transition-colors duration-200 flex flex-col gap-1"
+                [style.border-color]="frequencyType() === option.value ? 'var(--color-primary)' : '#e5e7eb'"
+                [style.backgroundColor]="frequencyType() === option.value ? 'var(--color-surface-accent)' : 'transparent'"
+              >
+                <input
+                  type="radio"
+                  class="sr-only"
+                  [checked]="frequencyType() === option.value"
+                  (change)="setFrequencyType(option.value)"
+                  name="habitFrequency"
+                />
+                <span class="text-sm font-semibold text-gray-800">
+                  {{ option.label }}
+                </span>
+                <span class="text-xs text-gray-500">
+                  {{ option.helper }}
+                </span>
+              </label>
+            }
+          </div>
+
+          @if (frequencyType() === 'weekly') {
+            <div class="mt-4 grid gap-3 md:grid-cols-2">
+              <div>
+                <label for="weeklyDays" class="block text-xs text-gray-500 mb-1">Número de días</label>
+                <input
+                  id="weeklyDays"
+                  type="number"
+                  min="1"
+                  max="7"
+                  [ngModel]="weeklyDaysCount() ?? ''"
+                  (ngModelChange)="setWeeklyDaysCount($event)"
+                  class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:border-transparent"
+                  style="--tw-ring-color: var(--color-primary);"
+                />
+              </div>
+              <p class="text-sm text-gray-500">
+                Indica cuántos días a la semana deseas cumplir este hábito (1-7).
+              </p>
+            </div>
+          }
+
+          @if (frequencyType() === 'specificDays') {
+            <div class="mt-4">
+              <p class="text-sm text-gray-600 mb-2">Selecciona los días:</p>
+              <div class="flex flex-wrap gap-2">
+                @for (day of specificDaysOptions; track day.value) {
+                  <label
+                    class="cursor-pointer rounded-full border px-4 py-2 text-sm font-semibold transition-colors duration-200"
+                    [style.border-color]="isSpecificDaySelected(day.value) ? 'var(--color-primary)' : '#d1d5db'"
+                    [style.backgroundColor]="isSpecificDaySelected(day.value) ? 'var(--color-primary)' : 'transparent'"
+                    [style.color]="isSpecificDaySelected(day.value) ? '#ffffff' : '#4b5563'"
+                  >
+                    <input
+                      type="checkbox"
+                      class="sr-only"
+                      [checked]="isSpecificDaySelected(day.value)"
+                      (change)="toggleSpecificDay(day.value)"
+                    />
+                    {{ day.label }}
+                  </label>
+                }
+              </div>
+            </div>
+          }
+
+          @if (frequencyError()) {
+            <p class="text-sm text-red-500 mt-2">{{ frequencyError() }}</p>
+          }
+        </div>
+
+        <div>
           <label for="habitDescription" class="block text-sm font-medium text-gray-700 mb-2">
             Descripción (opcional)
           </label>

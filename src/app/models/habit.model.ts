@@ -1,3 +1,20 @@
+export type HabitFrequencyType =
+  | 'daily'
+  | 'weekly'
+  | 'specificDays'
+  | 'weekends'
+  | 'weekdays';
+
+export type HabitSpecificDay = 'mon' | 'tue' | 'wed' | 'thu' | 'fri' | 'sat' | 'sun';
+
+export interface HabitFrequency {
+  type: HabitFrequencyType;
+  // Número objetivo de días por semana cuando se selecciona la opción semanal
+  daysPerWeek?: number;
+  // Días específicos seleccionados cuando se marca la opción de días concretos
+  selectedDays?: HabitSpecificDay[];
+}
+
 export interface Habit {
   id: string;
   name: string;
@@ -9,5 +26,7 @@ export interface Habit {
   completed: boolean;
   createdAt: Date;
   completedDates: Date[];
+  // Configuración elegida para la frecuencia del hábito
+  frequency?: HabitFrequency;
 }
 

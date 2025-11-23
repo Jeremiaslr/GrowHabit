@@ -1,11 +1,12 @@
 import { Injectable, signal } from '@angular/core';
-import { Habit } from '../models/habit.model';
+import { Habit, HabitFrequency, HabitSpecificDay } from '../models/habit.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class HabitService {
   private readonly STORAGE_KEY = 'habits';
+  private readonly SPECIFIC_DAY_VALUES: HabitSpecificDay[] = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
   
   // Signal para los hábitos
   habits = signal<Habit[]>([]);
@@ -17,7 +18,13 @@ export class HabitService {
   /**
    * Agrega un nuevo hábito
    */
-  addHabit(name: string, description?: string, durationMinutes?: number, category?: string): void {
+  addHabit(
+    name: string,
+    description?: string,
+    durationMinutes?: number,
+    category?: string,
+    frequency?: HabitFrequency
+  ): void {
     const newHabit: Habit = {
       id: this.generateId(),
       name,
@@ -26,7 +33,8 @@ export class HabitService {
       category,
       completed: false,
       createdAt: new Date(),
-      completedDates: []
+      completedDates: [],
+      frequency: frequency ? this.normalizeFrequency(frequency) : this.getDefaultFrequency()
     };
 
     this.habits.update(habits => [...habits, newHabit]);
@@ -60,7 +68,14 @@ export class HabitService {
   /**
    * Actualiza un hábito existente
    */
-  updateHabit(id: string, name: string, description?: string, durationMinutes?: number, category?: string): void {
+  updateHabit(
+    id: string,
+    name: string,
+    description?: string,
+    durationMinutes?: number,
+    category?: string,
+    frequency?: HabitFrequency
+  ): void {
     this.habits.update(habits =>
       habits.map(habit => {
         if (habit.id === id) {
@@ -69,7 +84,10 @@ export class HabitService {
             name,
             description,
             durationMinutes,
-            category
+            category,
+            frequency: frequency
+              ? this.normalizeFrequency(frequency)
+              : habit.frequency ?? this.getDefaultFrequency()
           };
         }
         return habit;
@@ -134,7 +152,8 @@ export class HabitService {
         const habits = JSON.parse(stored).map((habit: any) => ({
           ...habit,
           createdAt: new Date(habit.createdAt),
-          completedDates: habit.completedDates.map((date: string) => new Date(date))
+          completedDates: habit.completedDates.map((date: string) => new Date(date)),
+          frequency: this.normalizeFrequency(habit.frequency)
         }));
         this.habits.set(habits);
       }
@@ -163,6 +182,44 @@ export class HabitService {
       }))
     );
     this.saveHabitsToStorage();
+  }
+
+  /**
+   * Devuelve la configuración por defecto para la frecuencia de un hábito
+   */
+  private getDefaultFrequency(): HabitFrequency {
+    return { type: 'daily' };
+  }
+
+  /**
+   * Normaliza y valida la configuración de frecuencia
+   */
+  private normalizeFrequency(frequency?: HabitFrequency): HabitFrequency {
+    if (!frequency || !frequency.type) {
+      return this.getDefaultFrequency();
+    }
+
+    if (frequency.type === 'weekly') {
+      const days = frequency.daysPerWeek ?? 3;
+      const clamped = Math.min(7, Math.max(1, days));
+      return { type: 'weekly', daysPerWeek: clamped };
+    }
+
+    if (frequency.type === 'specificDays') {
+      const selected = (frequency.selectedDays ?? []).filter(day =>
+        this.SPECIFIC_DAY_VALUES.includes(day)
+      );
+      if (selected.length === 0) {
+        return this.getDefaultFrequency();
+      }
+      return { type: 'specificDays', selectedDays: selected };
+    }
+
+    if (frequency.type === 'weekends' || frequency.type === 'weekdays' || frequency.type === 'daily') {
+      return { type: frequency.type };
+    }
+
+    return this.getDefaultFrequency();
   }
 }
 

@@ -163,7 +163,8 @@ export class HabitsListComponent implements OnInit, OnDestroy {
       name,
       this.newHabitDescription().trim() || undefined,
       duration,
-      this.newHabitCategory() || undefined
+      this.newHabitCategory() || undefined,
+      undefined
     );
     this.newHabitName.set('');
     this.newHabitDescription.set('');
