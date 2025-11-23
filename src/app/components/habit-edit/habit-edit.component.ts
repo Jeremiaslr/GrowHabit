@@ -20,9 +20,12 @@ export class HabitEditComponent implements OnInit {
   habitMinutes = signal<number | null>(null);
   habitCategory = signal<string | null>(null);
   frequencyType = signal<HabitFrequencyType>('daily');
-  weeklyDaysCount = signal<number | null>(3);
+  weeklyDaysCount = signal(2);
   specificDaysSelection = signal<HabitSpecificDay[]>([]);
   frequencyError = signal<string | null>(null);
+
+  readonly MIN_WEEKLY_DAYS = 2;
+  readonly MAX_WEEKLY_DAYS = 6;
 
   categories = ['Salud', 'Trabajo', 'Estudio', 'Finanzas', 'Familia', 'Ocio', 'Otro'];
   frequencyOptions: Array<{ value: HabitFrequencyType; label: string; helper: string }> = [
@@ -81,9 +84,9 @@ export class HabitEditComponent implements OnInit {
     const frequency = habit.frequency ?? { type: 'daily' };
     this.frequencyType.set(frequency.type);
     if (frequency.type === 'weekly') {
-      this.weeklyDaysCount.set(frequency.daysPerWeek ?? 3);
+      this.weeklyDaysCount.set(this.clampWeeklyCount(frequency.daysPerWeek));
     } else {
-      this.weeklyDaysCount.set(3);
+      this.weeklyDaysCount.set(this.MIN_WEEKLY_DAYS);
     }
     if (frequency.type === 'specificDays') {
       this.specificDaysSelection.set(frequency.selectedDays ?? []);
@@ -135,26 +138,21 @@ export class HabitEditComponent implements OnInit {
   setFrequencyType(type: HabitFrequencyType): void {
     this.frequencyType.set(type);
     this.frequencyError.set(null);
-    if (type !== 'weekly') {
-      this.weeklyDaysCount.set(3);
-    }
     if (type !== 'specificDays') {
       this.specificDaysSelection.set([]);
     }
   }
 
-  setWeeklyDaysCount(value: string | number | null): void {
-    if (value === null || value === '') {
-      this.weeklyDaysCount.set(null);
-      return;
-    }
+  decrementWeeklyDays(): void {
+    this.weeklyDaysCount.update(value =>
+      Math.max(this.MIN_WEEKLY_DAYS, value - 1)
+    );
+  }
 
-    const parsed = typeof value === 'number' ? value : Number(value);
-    if (Number.isNaN(parsed)) {
-      return;
-    }
-
-    this.weeklyDaysCount.set(Math.floor(parsed));
+  incrementWeeklyDays(): void {
+    this.weeklyDaysCount.update(value =>
+      Math.min(this.MAX_WEEKLY_DAYS, value + 1)
+    );
   }
 
   toggleSpecificDay(day: HabitSpecificDay): void {
@@ -174,8 +172,8 @@ export class HabitEditComponent implements OnInit {
     const type = this.frequencyType();
     if (type === 'weekly') {
       const count = this.weeklyDaysCount();
-      if (!count || count < 1 || count > 7) {
-        this.frequencyError.set('Selecciona entre 1 y 7 días por semana.');
+      if (!count || count < this.MIN_WEEKLY_DAYS || count > this.MAX_WEEKLY_DAYS) {
+        this.frequencyError.set(`Selecciona entre ${this.MIN_WEEKLY_DAYS} y ${this.MAX_WEEKLY_DAYS} días por semana.`);
         return false;
       }
     }
@@ -192,8 +190,8 @@ export class HabitEditComponent implements OnInit {
   private buildFrequencyPayload(): HabitFrequency {
     const type = this.frequencyType();
     if (type === 'weekly') {
-      const count = this.weeklyDaysCount() ?? 3;
-      const clamped = Math.min(7, Math.max(1, count));
+      const count = this.weeklyDaysCount();
+      const clamped = Math.min(this.MAX_WEEKLY_DAYS, Math.max(this.MIN_WEEKLY_DAYS, count));
       return {
         type,
         daysPerWeek: clamped
@@ -208,6 +206,11 @@ export class HabitEditComponent implements OnInit {
     }
 
     return { type };
+  }
+
+  private clampWeeklyCount(value?: number): number {
+    const fallback = value ?? this.MIN_WEEKLY_DAYS;
+    return Math.min(this.MAX_WEEKLY_DAYS, Math.max(this.MIN_WEEKLY_DAYS, fallback));
   }
 }
 

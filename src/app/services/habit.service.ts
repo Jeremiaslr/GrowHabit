@@ -201,7 +201,7 @@ export class HabitService {
 
     if (frequency.type === 'weekly') {
       const days = frequency.daysPerWeek ?? 3;
-      const clamped = Math.min(7, Math.max(1, days));
+      const clamped = Math.min(6, Math.max(2, days));
       return { type: 'weekly', daysPerWeek: clamped };
     }
 
