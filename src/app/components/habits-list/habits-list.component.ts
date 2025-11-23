@@ -5,6 +5,7 @@ import { Router, RouterModule } from '@angular/router';
 import { HabitService } from '../../services/habit.service';
 import { AuthService } from '../../services/auth.service';
 import { NavbarComponent } from '../navbar/navbar.component';
+import { Habit, HabitSpecificDay } from '../../models/habit.model';
 
 @Component({
   selector: 'app-habits-list',
@@ -15,6 +16,16 @@ import { NavbarComponent } from '../navbar/navbar.component';
 })
 export class HabitsListComponent implements OnInit, OnDestroy {
   protected readonly title = signal('Aplicación de Hábitos');
+  private readonly dayLabels: Record<HabitSpecificDay, string> = {
+    mon: 'L',
+    tue: 'M',
+    wed: 'X',
+    thu: 'J',
+    fri: 'V',
+    sat: 'S',
+    sun: 'D'
+  };
+  private readonly dayKeys: HabitSpecificDay[] = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'];
   
   newHabitName = signal('');
   newHabitDescription = signal('');
@@ -28,10 +39,12 @@ export class HabitsListComponent implements OnInit, OnDestroy {
   private dayCheckInterval: any;
 
   categories = ['Salud', 'Trabajo', 'Estudio', 'Finanzas', 'Familia', 'Ocio', 'Otro'];
+  todayHabits = computed(() => this.habitService.habits().filter(habit => this.isHabitAvailableToday(habit)));
+  scheduledHabitsCount = computed(() => this.todayHabits().length);
 
   // Calcula el progreso diario
   dailyProgress = computed(() => {
-    const habits = this.habitService.habits();
+    const habits = this.todayHabits();
     if (habits.length === 0) return 0;
     
     const completedToday = habits.filter(habit => habit.completed).length;
@@ -40,7 +53,7 @@ export class HabitsListComponent implements OnInit, OnDestroy {
 
   // Calcula el número de hábitos completados hoy
   completedHabitsCount = computed(() => {
-    return this.habitService.habits().filter(habit => habit.completed).length;
+    return this.todayHabits().filter(habit => habit.completed).length;
   });
 
   // Obtiene el nombre de usuario formateado (primera letra mayúscula)
@@ -178,6 +191,10 @@ export class HabitsListComponent implements OnInit, OnDestroy {
    * Alterna el estado de completado de un hábito
    */
   toggleHabit(id: string): void {
+    const habit = this.habitService.habits().find(h => h.id === id);
+    if (!habit || !this.isHabitAvailableToday(habit)) {
+      return;
+    }
     this.habitService.toggleHabit(id);
   }
 
@@ -229,6 +246,66 @@ export class HabitsListComponent implements OnInit, OnDestroy {
     } else {
       return `${mins} min`;
     }
+  }
+
+  /**
+   * Devuelve la descripción legible de la frecuencia del hábito
+   */
+  getFrequencyLabel(habit: Habit): string {
+    const frequency = habit.frequency ?? { type: 'daily' };
+
+    switch (frequency.type) {
+      case 'daily':
+        return 'Todos los días';
+      case 'weekly': {
+        const count = frequency.daysPerWeek ?? 2;
+        return `${count} día${count === 1 ? '' : 's'} a la semana`;
+      }
+      case 'specificDays': {
+        const selected = frequency.selectedDays ?? [];
+        if (selected.length === 0) {
+          return 'Días específicos';
+        }
+        const labels = selected.map(day => this.dayLabels[day]).join(', ');
+        return `Días concretos: ${labels}`;
+      }
+      case 'weekends':
+        return 'Solo fines de semana';
+      case 'weekdays':
+        return 'Solo días laborales';
+      default:
+        return 'Todos los días';
+    }
+  }
+
+  /**
+   * Indica si el hábito puede completarse en la fecha actual
+   */
+  isHabitAvailableToday(habit: Habit): boolean {
+    const frequency = habit.frequency ?? { type: 'daily' };
+    const todayKey = this.getTodayDayKey();
+    const isWeekend = todayKey === 'sat' || todayKey === 'sun';
+
+    switch (frequency.type) {
+      case 'daily':
+        return true;
+      case 'weekly':
+        return true;
+      case 'specificDays':
+        return (frequency.selectedDays ?? []).includes(todayKey);
+      case 'weekends':
+        return isWeekend;
+      case 'weekdays':
+        return !isWeekend;
+      default:
+        return true;
+    }
+  }
+
+  private getTodayDayKey(): HabitSpecificDay {
+    const today = new Date();
+    const jsDayIndex = today.getDay(); // 0 domingo - 6 sábado
+    return this.dayKeys[jsDayIndex];
   }
 }
 

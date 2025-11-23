@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { NavbarComponent } from '../navbar/navbar.component';
 import { HabitService } from '../../services/habit.service';
+import { Habit, HabitSpecificDay } from '../../models/habit.model';
 
 interface CalendarDay {
   date: Date;
@@ -10,6 +11,7 @@ interface CalendarDay {
   isCurrentMonth: boolean;
   isToday: boolean;
   completedHabitsCount: number;
+  scheduledHabitsCount: number;
 }
 
 @Component({
@@ -21,6 +23,7 @@ interface CalendarDay {
 })
 export class CalendarComponent {
   currentDate = signal(new Date());
+  private readonly dayKeys: HabitSpecificDay[] = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'];
   
   // Nombres de los meses en español
   monthNames = [
@@ -70,24 +73,30 @@ export class CalendarComponent {
     // Días del mes anterior (empezando desde Lunes)
     for (let i = startDayMondayBased - 1; i >= 0; i--) {
       const dayDate = new Date(year, month - 1, daysInPrevMonth - i);
+      const scheduledHabitsCount = this.getScheduledHabitsCountForDate(dayDate);
+      const completedHabitsCount = this.getCompletedHabitsForDate(dayDate);
       days.push({
         date: dayDate,
         dayNumber: dayDate.getDate(),
         isCurrentMonth: false,
         isToday: this.isSameDay(dayDate, today),
-        completedHabitsCount: this.getCompletedHabitsForDate(dayDate)
+        completedHabitsCount,
+        scheduledHabitsCount
       });
     }
     
     // Días del mes actual
     for (let day = 1; day <= lastDay.getDate(); day++) {
       const dayDate = new Date(year, month, day);
+      const scheduledHabitsCount = this.getScheduledHabitsCountForDate(dayDate);
+      const completedHabitsCount = this.getCompletedHabitsForDate(dayDate);
       days.push({
         date: dayDate,
         dayNumber: day,
         isCurrentMonth: true,
         isToday: this.isSameDay(dayDate, today),
-        completedHabitsCount: this.getCompletedHabitsForDate(dayDate)
+        completedHabitsCount,
+        scheduledHabitsCount
       });
     }
     
@@ -96,12 +105,15 @@ export class CalendarComponent {
     const remainingDays = Math.ceil(totalDays / 7) * 7 - totalDays;
     for (let day = 1; day <= remainingDays; day++) {
       const dayDate = new Date(year, month + 1, day);
+      const scheduledHabitsCount = this.getScheduledHabitsCountForDate(dayDate);
+      const completedHabitsCount = this.getCompletedHabitsForDate(dayDate);
       days.push({
         date: dayDate,
         dayNumber: day,
         isCurrentMonth: false,
         isToday: this.isSameDay(dayDate, today),
-        completedHabitsCount: this.getCompletedHabitsForDate(dayDate)
+        completedHabitsCount,
+        scheduledHabitsCount
       });
     }
     
@@ -116,10 +128,17 @@ export class CalendarComponent {
     const dateString = this.getDateString(date);
     
     return habits.filter(habit => {
+      if (!this.isHabitScheduledForDate(habit, date)) {
+        return false;
+      }
       return habit.completedDates.some(completedDate => {
         return this.getDateString(completedDate) === dateString;
       });
     }).length;
+  }
+
+  private getScheduledHabitsCountForDate(date: Date): number {
+    return this.habitService.habits().filter(habit => this.isHabitScheduledForDate(habit, date)).length;
   }
 
   /**
@@ -171,7 +190,11 @@ export class CalendarComponent {
    */
   getTotalCompletedDays(): number {
     const days = this.calendarDays();
-    const currentMonthDays = days.filter(day => day.isCurrentMonth && day.completedHabitsCount > 0);
+    const currentMonthDays = days.filter(day =>
+      day.isCurrentMonth &&
+      day.scheduledHabitsCount > 0 &&
+      day.completedHabitsCount >= day.scheduledHabitsCount
+    );
     return currentMonthDays.length;
   }
 
@@ -181,15 +204,13 @@ export class CalendarComponent {
   getCompletionRate(): number {
     const days = this.calendarDays();
     const currentMonthDays = days.filter(day => day.isCurrentMonth);
-    const daysWithHabits = currentMonthDays.filter(day => day.completedHabitsCount > 0).length;
-    const totalHabits = this.habitService.habits().length;
+    const totalScheduled = currentMonthDays.reduce((sum, day) => sum + day.scheduledHabitsCount, 0);
+    if (totalScheduled === 0) return 0;
+    const completed = currentMonthDays.reduce((sum, day) => {
+      return sum + Math.min(day.completedHabitsCount, day.scheduledHabitsCount);
+    }, 0);
     
-    if (totalHabits === 0) return 0;
-    
-    const totalPossibleDays = currentMonthDays.length * totalHabits;
-    const completedDays = currentMonthDays.reduce((sum, day) => sum + day.completedHabitsCount, 0);
-    
-    return Math.round((completedDays / totalPossibleDays) * 100);
+    return Math.round((completed / totalScheduled) * 100);
   }
 
   /**
@@ -210,9 +231,10 @@ export class CalendarComponent {
    * Calcula el porcentaje de completado para un día específico
    */
   getCompletionPercentage(day: CalendarDay): number {
-    const totalHabits = this.habitService.habits().length;
-    if (totalHabits === 0) return 0;
-    return Math.round((day.completedHabitsCount / totalHabits) * 100);
+    if (day.scheduledHabitsCount === 0) {
+      return 0;
+    }
+    return Math.round((day.completedHabitsCount / day.scheduledHabitsCount) * 100);
   }
 
   /**
@@ -240,6 +262,32 @@ export class CalendarComponent {
     
     // Crear el path: Mover al centro, línea al inicio (arriba), arco hasta el punto final, cerrar
     return `M ${centerX} ${centerY} L ${centerX} ${centerY - radius} A ${radius} ${radius} 0 ${largeArcFlag} 1 ${x} ${y} Z`;
+  }
+
+  private isHabitScheduledForDate(habit: Habit, date: Date): boolean {
+    const frequency = habit.frequency ?? { type: 'daily' };
+    const dayKey = this.getDayKey(date);
+    const isWeekend = dayKey === 'sat' || dayKey === 'sun';
+
+    switch (frequency.type) {
+      case 'daily':
+        return true;
+      case 'weekly':
+        return true;
+      case 'specificDays':
+        return (frequency.selectedDays ?? []).includes(dayKey);
+      case 'weekends':
+        return isWeekend;
+      case 'weekdays':
+        return !isWeekend;
+      default:
+        return true;
+    }
+  }
+
+  private getDayKey(date: Date): HabitSpecificDay {
+    const index = date.getDay(); // 0 domingo - 6 sábado
+    return this.dayKeys[index];
   }
 }
 

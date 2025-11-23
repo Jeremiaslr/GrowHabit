@@ -25,7 +25,11 @@
             </div>
           </div>
           <p class="text-sm text-gray-500 mt-2">
-            {{ completedHabitsCount() }} de {{ habitService.habits().length }} hábitos completados hoy
+            @if (scheduledHabitsCount() > 0) {
+              {{ completedHabitsCount() }} de {{ scheduledHabitsCount() }} hábitos programados hoy completados
+            } @else {
+              No hay hábitos programados para hoy
+            }
           </p>
           
           <!-- Mensaje de felicitación cuando se completa el 100% -->
@@ -97,9 +101,12 @@
               <button
                 (click)="toggleHabit(habit.id)"
                 class="mt-1 flex-shrink-0 w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all duration-200"
+                [disabled]="!isHabitAvailableToday(habit)"
                 [style.border-color]="!habit.completed ? 'var(--color-primary)' : 'var(--color-primary)'"
                 [style.backgroundColor]="habit.completed ? 'var(--color-primary)' : 'transparent'"
                 [class.border-transparent]="habit.completed"
+                [class.opacity-40]="!isHabitAvailableToday(habit)"
+                [class.cursor-not-allowed]="!isHabitAvailableToday(habit)"
               >
                 @if (habit.completed) {
                   <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -128,6 +135,14 @@
                 @if (habit.durationMinutes) {
                   <p class="text-gray-600 text-sm mb-3" [class.text-gray-400]="habit.completed">
                     Duración: {{ formatDuration(habit.durationMinutes) }}
+                  </p>
+                }
+                <p class="text-gray-600 text-sm mb-3" [class.text-gray-400]="habit.completed">
+                  Frecuencia: {{ getFrequencyLabel(habit) }}
+                </p>
+                @if (!isHabitAvailableToday(habit)) {
+                  <p class="text-sm text-amber-600 mb-3">
+                    Este hábito no está programado para hoy.
                   </p>
                 }
                 <div class="flex items-center gap-4 text-sm text-gray-500">

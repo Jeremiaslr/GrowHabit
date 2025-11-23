@@ -89,7 +89,7 @@
                       class="text-gray-200"
                     />
                     <!-- Círculo de progreso morado (relleno sólido proporcional) -->
-                    @if (day.completedHabitsCount > 0 && habitService.habits().length > 0) {
+                    @if (day.scheduledHabitsCount > 0) {
                       <circle
                         cx="16"
                         cy="16"

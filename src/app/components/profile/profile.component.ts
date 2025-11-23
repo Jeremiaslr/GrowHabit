@@ -4,7 +4,7 @@ import { Router, RouterModule } from '@angular/router';
 import { NavbarComponent } from '../navbar/navbar.component';
 import { HabitService } from '../../services/habit.service';
 import { AuthService } from '../../services/auth.service';
-import { Habit } from '../../models/habit.model';
+import { Habit, HabitSpecificDay } from '../../models/habit.model';
 
 interface CategoryStat {
   category: string;
@@ -28,6 +28,7 @@ interface ActivityEntry {
 })
 export class ProfileComponent {
   private readonly habitsSignal = computed(() => this.habitService.habits());
+  private readonly dayKeys: HabitSpecificDay[] = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'];
 
   protected readonly userName = computed(() => {
     const user = this.authService.currentUser();
@@ -61,19 +62,28 @@ export class ProfileComponent {
 
   protected readonly totalHabits = computed(() => this.habitsSignal().length);
 
+  protected readonly scheduledHabitsToday = computed(() => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    return this.habitsSignal().filter(habit => this.isHabitScheduledForDate(habit, today));
+  });
+
+  protected readonly scheduledHabitsCountToday = computed(() => this.scheduledHabitsToday().length);
+
   protected readonly completedToday = computed(() => {
-    return this.habitsSignal().filter(habit => habit.completed).length;
+    return this.scheduledHabitsToday().filter(habit => habit.completed).length;
   });
 
   protected readonly pendingHabits = computed(() => {
-    return Math.max(this.totalHabits() - this.completedToday(), 0);
+    return Math.max(this.scheduledHabitsCountToday() - this.completedToday(), 0);
   });
 
   protected readonly completionRate = computed(() => {
-    if (this.totalHabits() === 0) {
+    const scheduled = this.scheduledHabitsCountToday();
+    if (scheduled === 0) {
       return 0;
     }
-    return Math.round((this.completedToday() / this.totalHabits()) * 100);
+    return Math.round((this.completedToday() / scheduled) * 100);
   });
 
   protected readonly categoryStats = computed<CategoryStat[]>(() => {
@@ -215,6 +225,32 @@ export class ProfileComponent {
     }
 
     return longest;
+  }
+
+  private isHabitScheduledForDate(habit: Habit, date: Date): boolean {
+    const frequency = habit.frequency ?? { type: 'daily' };
+    const dayKey = this.getDayKey(date);
+    const isWeekend = dayKey === 'sat' || dayKey === 'sun';
+
+    switch (frequency.type) {
+      case 'daily':
+        return true;
+      case 'weekly':
+        return true;
+      case 'specificDays':
+        return (frequency.selectedDays ?? []).includes(dayKey);
+      case 'weekends':
+        return isWeekend;
+      case 'weekdays':
+        return !isWeekend;
+      default:
+        return true;
+    }
+  }
+
+  private getDayKey(date: Date): HabitSpecificDay {
+    const index = date.getDay();
+    return this.dayKeys[index];
   }
 
   private getCompletionDateKeys(): string[] {

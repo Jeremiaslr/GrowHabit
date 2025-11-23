@@ -61,7 +61,13 @@
           <span class="badge success">{{ completionRate() }}%</span>
         </div>
         <h2>{{ completedToday() }}</h2>
-        <p class="detail">Hábitos marcados como listos</p>
+        <p class="detail">
+          @if (scheduledHabitsCountToday() === 0) {
+            No hay hábitos programados para hoy
+          } @else {
+            De {{ scheduledHabitsCountToday() }} hábitos planificados
+          }
+        </p>
         <div class="progress-bar">
           <div class="progress" [style.width.%]="completionRate()"></div>
         </div>
@@ -74,7 +80,13 @@
         </div>
         <h2>{{ pendingHabits() }}</h2>
         <p class="detail">
-          {{ pendingHabits() === 0 ? 'Todo al día, gran trabajo' : 'Hábitos que aún puedes completar hoy' }}
+          @if (scheduledHabitsCountToday() === 0) {
+            No tienes hábitos pendientes hoy
+          } @else if (pendingHabits() === 0) {
+            Todo al día, gran trabajo
+          } @else {
+            Hábitos que aún puedes completar hoy
+          }
         </p>
       </article>
     </section>
@@ -162,6 +174,13 @@
           </p>
           <button class="btn primary w-full" type="button" (click)="navigateToNewHabit()">
             Crear hábito ahora
+          </button>
+        } @else if (scheduledHabitsCountToday() === 0) {
+          <p class="detail mb-4">
+            Hoy no tienes hábitos programados. Aprovecha para planificar o descansar.
+          </p>
+          <button class="btn ghost w-full" type="button" (click)="navigateToCalendar()">
+            Revisar calendario
           </button>
         } @else if (pendingHabits() > 0) {
           <p class="detail mb-4">
