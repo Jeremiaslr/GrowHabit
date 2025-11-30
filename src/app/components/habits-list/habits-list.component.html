@@ -123,7 +123,10 @@
                   {{ habit.name }}
                 </h3>
                 @if (habit.category) {
-                  <span class="inline-block text-xs px-2 py-1 rounded-full mb-2" style="background-color: var(--color-surface-accent); color: var(--color-primary);">{{ habit.category }}</span>
+                  <span class="inline-block text-xs px-2 py-1 rounded-full mb-2 category-pill">
+                    <span class="emoji">{{ getCategoryEmoji(habit.category) }}</span>
+                    <span>{{ habit.category }}</span>
+                  </span>
                 }
                 @if (habit.description) {
                   <p 

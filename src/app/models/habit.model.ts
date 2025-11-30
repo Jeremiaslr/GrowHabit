@@ -30,3 +30,20 @@ export interface Habit {
   frequency?: HabitFrequency;
 }
 
+export const HABIT_CATEGORY_EMOJIS: Record<string, string> = {
+  Salud: '💪',
+  Trabajo: '💼',
+  Estudio: '📚',
+  Finanzas: '💰',
+  Familia: '👨‍👩‍👧‍👦',
+  Ocio: '🎯',
+  Otro: '✨'
+};
+
+export function getHabitCategoryEmoji(category?: string): string {
+  if (!category) {
+    return '🏷️';
+  }
+  return HABIT_CATEGORY_EMOJIS[category] ?? '🏷️';
+}
+

@@ -5,7 +5,7 @@ import { Router, RouterModule } from '@angular/router';
 import { HabitService } from '../../services/habit.service';
 import { AuthService } from '../../services/auth.service';
 import { NavbarComponent } from '../navbar/navbar.component';
-import { Habit, HabitSpecificDay } from '../../models/habit.model';
+import { Habit, HabitSpecificDay, getHabitCategoryEmoji } from '../../models/habit.model';
 
 @Component({
   selector: 'app-habits-list',
@@ -276,6 +276,13 @@ export class HabitsListComponent implements OnInit, OnDestroy {
       default:
         return 'Todos los días';
     }
+  }
+
+  /**
+   * Devuelve el emoji asociado a la categoría del hábito
+   */
+  getCategoryEmoji(category?: string): string {
+    return getHabitCategoryEmoji(category);
   }
 
   /**

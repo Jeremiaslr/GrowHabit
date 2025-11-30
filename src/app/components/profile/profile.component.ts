@@ -253,6 +253,10 @@ export class ProfileComponent {
     return this.dayKeys[index];
   }
 
+  protected getCategoryEmoji(category?: string): string {
+    return getHabitCategoryEmoji(category);
+  }
+
   private getCompletionDateKeys(): string[] {
     const dates = new Set<string>();
 

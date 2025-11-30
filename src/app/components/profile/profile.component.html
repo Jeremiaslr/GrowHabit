@@ -116,7 +116,7 @@
                 <div>
                   <strong>{{ activity.habitName }}</strong>
                   <p class="detail">
-                    {{ activity.category || 'General' }} • {{ formatActivityDate(activity.date) }}
+                    {{ getCategoryEmoji(activity.category) }} {{ activity.category || 'General' }} • {{ formatActivityDate(activity.date) }}
                   </p>
                   @if (activity.description) {
                     <p class="description">
@@ -148,7 +148,7 @@
             @for (category of categoryStats(); track category.category) {
               <li>
                 <div>
-                  <strong>{{ category.category }}</strong>
+                  <strong>{{ getCategoryEmoji(category.category) }} {{ category.category }}</strong>
                   <p class="detail">{{ category.count }} hábito{{ category.count === 1 ? '' : 's' }}</p>
                 </div>
                 <div class="pill">

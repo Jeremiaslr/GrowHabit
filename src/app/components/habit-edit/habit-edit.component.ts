@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { HabitService } from '../../services/habit.service';
-import { HabitFrequency, HabitFrequencyType, HabitSpecificDay } from '../../models/habit.model';
+import { HabitFrequency, HabitFrequencyType, HabitSpecificDay, getHabitCategoryEmoji } from '../../models/habit.model';
 
 @Component({
   selector: 'app-habit-edit',
@@ -36,6 +36,10 @@ export class HabitEditComponent implements OnInit {
     { value: 'weekdays', label: 'Solo días laborales', helper: 'De lunes a viernes.' }
   ];
   specificDaysOptions: Array<{ value: HabitSpecificDay; label: string }> = [
+  getCategoryEmoji(category?: string): string {
+    return getHabitCategoryEmoji(category);
+  }
+
     { value: 'mon', label: 'L' },
     { value: 'tue', label: 'M' },
     { value: 'wed', label: 'X' },

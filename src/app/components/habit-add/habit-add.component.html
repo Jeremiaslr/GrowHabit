@@ -78,7 +78,9 @@
             style="--tw-ring-color: var(--color-primary);"
           >
             <option value="">Sin categoría</option>
-            <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
+            <option *ngFor="let cat of categories" [value]="cat">
+              {{ getCategoryEmoji(cat) }} {{ cat }}
+            </option>
           </select>
         </div>
 
