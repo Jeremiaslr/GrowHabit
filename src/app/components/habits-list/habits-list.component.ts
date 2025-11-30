@@ -38,7 +38,6 @@ export class HabitsListComponent implements OnInit, OnDestroy {
   private lastResetDate = signal<string>('');
   private dayCheckInterval: any;
 
-  categories = ['Salud', 'Trabajo', 'Estudio', 'Finanzas', 'Familia', 'Ocio', 'Otro'];
   todayHabits = computed(() => this.habitService.habits().filter(habit => this.isHabitAvailableToday(habit)));
   scheduledHabitsCount = computed(() => this.todayHabits().length);
 

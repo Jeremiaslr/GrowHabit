@@ -3,7 +3,13 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { HabitService } from '../../services/habit.service';
-import { HabitFrequency, HabitFrequencyType, HabitSpecificDay, getHabitCategoryEmoji } from '../../models/habit.model';
+import {
+  HabitCategoryGroup,
+  HABIT_CATEGORY_GROUPS,
+  HabitFrequency,
+  HabitFrequencyType,
+  HabitSpecificDay
+} from '../../models/habit.model';
 
 @Component({
   selector: 'app-habit-edit',
@@ -19,6 +25,7 @@ export class HabitEditComponent implements OnInit {
   habitHours = signal<number | null>(null);
   habitMinutes = signal<number | null>(null);
   habitCategory = signal<string | null>(null);
+  showMobileCategoryDropdown = signal(false);
   frequencyType = signal<HabitFrequencyType>('daily');
   weeklyDaysCount = signal(2);
   specificDaysSelection = signal<HabitSpecificDay[]>([]);
@@ -27,7 +34,7 @@ export class HabitEditComponent implements OnInit {
   readonly MIN_WEEKLY_DAYS = 2;
   readonly MAX_WEEKLY_DAYS = 6;
 
-  categories = ['Salud', 'Trabajo', 'Estudio', 'Finanzas', 'Familia', 'Ocio', 'Otro'];
+  categoryGroups: HabitCategoryGroup[] = HABIT_CATEGORY_GROUPS;
   frequencyOptions: Array<{ value: HabitFrequencyType; label: string; helper: string }> = [
     { value: 'daily', label: 'Todos los días', helper: 'Repite el hábito cada día de la semana.' },
     { value: 'weekly', label: 'X días a la semana', helper: 'Define cuántos días a la semana deseas cumplirlo.' },
@@ -44,10 +51,6 @@ export class HabitEditComponent implements OnInit {
     { value: 'sat', label: 'S' },
     { value: 'sun', label: 'D' }
   ];
-
-  getCategoryEmoji(category?: string): string {
-    return getHabitCategoryEmoji(category);
-  }
 
   constructor(
     private route: ActivatedRoute,
@@ -215,6 +218,15 @@ export class HabitEditComponent implements OnInit {
   private clampWeeklyCount(value?: number): number {
     const fallback = value ?? this.MIN_WEEKLY_DAYS;
     return Math.min(this.MAX_WEEKLY_DAYS, Math.max(this.MIN_WEEKLY_DAYS, fallback));
+  }
+
+  toggleMobileCategoryDropdown(): void {
+    this.showMobileCategoryDropdown.update(value => !value);
+  }
+
+  selectCategory(category?: string): void {
+    this.habitCategory.set(category ?? null);
+    this.showMobileCategoryDropdown.set(false);
   }
 }
 
