@@ -36,10 +36,6 @@ export class HabitEditComponent implements OnInit {
     { value: 'weekdays', label: 'Solo días laborales', helper: 'De lunes a viernes.' }
   ];
   specificDaysOptions: Array<{ value: HabitSpecificDay; label: string }> = [
-  getCategoryEmoji(category?: string): string {
-    return getHabitCategoryEmoji(category);
-  }
-
     { value: 'mon', label: 'L' },
     { value: 'tue', label: 'M' },
     { value: 'wed', label: 'X' },
@@ -48,6 +44,10 @@ export class HabitEditComponent implements OnInit {
     { value: 'sat', label: 'S' },
     { value: 'sun', label: 'D' }
   ];
+
+  getCategoryEmoji(category?: string): string {
+    return getHabitCategoryEmoji(category);
+  }
 
   constructor(
     private route: ActivatedRoute,

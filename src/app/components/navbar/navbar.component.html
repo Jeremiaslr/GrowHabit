@@ -3,7 +3,16 @@
     <div class="flex justify-between items-center h-16">
       <!-- Logo y título -->
       <span class="flex items-center text-white">
-        {{ greeting() }}&nbsp;<span class="font-semibold">{{ userName() }}</span>
+        @if ((!isCalendarRoute() && !isProfileRoute()) || !authService.currentUser()) {
+          {{ greeting() }}&nbsp;<span class="font-semibold">{{ userName() }}</span>
+        } @else {
+          <button class="flex items-center gap-2 text-white font-semibold underline-offset-4 hover:underline transition" (click)="navigateTo('/')">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+            </svg>
+            Volver al inicio
+          </button>
+        }
       </span>
 
       <!-- Botón hamburguesa (mobile) -->
@@ -27,10 +36,22 @@
 
       <!-- Menú desktop (oculto en mobile) -->
       <div class="hidden md:flex md:items-center md:space-x-3">
-        @if (authService.currentUser()) {
+        @if (authService.currentUser() && !isCalendarRoute() && !isProfileRoute()) {
           <span class="text-sm text-white mr-2">
             {{ greeting() }}&nbsp;<span class="font-semibold">{{ userName() }}</span>
           </span>
+        }
+        @if (authService.currentUser() && (isCalendarRoute() || isProfileRoute())) {
+          <button
+            (click)="navigateTo('/')"
+            class="nav-link">
+            <span class="nav-link-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+              </svg>
+            </span>
+            Volver al inicio
+          </button>
         }
         @if (!isRouteActive('/')) {
           <button

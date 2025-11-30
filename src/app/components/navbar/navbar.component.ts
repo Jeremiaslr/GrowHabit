@@ -35,12 +35,8 @@ export class NavbarComponent {
     this.currentRoute.set(this.router.url);
   }
 
-  /**
-   * Verifica si estamos en la vista del calendario
-   */
-  isCalendarRoute = computed(() => {
-    return this.currentRoute().includes('/calendar');
-  });
+  isCalendarRoute = computed(() => this.currentRoute().startsWith('/calendar'));
+  isProfileRoute = computed(() => this.currentRoute().startsWith('/profile'));
 
   /**
    * Determina si una ruta de navegación está activa

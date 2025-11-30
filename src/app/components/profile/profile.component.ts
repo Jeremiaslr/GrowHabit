@@ -4,7 +4,7 @@ import { Router, RouterModule } from '@angular/router';
 import { NavbarComponent } from '../navbar/navbar.component';
 import { HabitService } from '../../services/habit.service';
 import { AuthService } from '../../services/auth.service';
-import { Habit, HabitSpecificDay } from '../../models/habit.model';
+import { Habit, HabitSpecificDay, getHabitCategoryEmoji } from '../../models/habit.model';
 
 interface CategoryStat {
   category: string;
